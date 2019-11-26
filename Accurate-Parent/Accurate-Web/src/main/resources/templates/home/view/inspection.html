@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+		<title>检查报告单</title>
+		<link href="/assets/css/TenG3.css" rel="stylesheet" />
+		<link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet" />
+		<link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet" />
+		<link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet" />
+		<script src="/assets/jquery-1.9.1.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+		<script src="/assets/js/common.js"></script>
+	</head>
+	<body ontouchstart class="bg">
+		<header class="demos-header">
+			<h1 class="demos-title ">检查报告单</h1>
+			<p class="demos-sub-title">将进酒，杯莫停，与君歌一曲！</p>
+		</header>
+		<div class="weui-form-preview">
+			<div class="weui-form-preview__hd">
+				<label class="weui-form-preview__label">单据名称</label>
+				<em class="weui-form-preview__value divThree" id="billName"></em>
+			</div>
+
+			<div class="weui-form-preview__bd">
+				<div class="weui-form-preview__item">
+					<label class="weui-form-preview__label">病人</label>
+					<span class="weui-form-preview__value" id="name"></span>
+				</div>
+				<!--<div class="weui-form-preview__item">-->
+					<!--<label class="weui-form-preview__label">性别</label>-->
+					<!--<span class="weui-form-preview__value" id="sex">男</span>-->
+				<!--</div>-->
+				<!--<div class="weui-form-preview__item">-->
+					<!--<label class="weui-form-preview__label">年龄</label>-->
+					<!--<span class="weui-form-preview__value" id="age">23</span>-->
+				<!--</div>-->
+				<!--<div class="weui-form-preview__item">-->
+					<!--<label class="weui-form-preview__label">住院号</label>-->
+					<!--<span class="weui-form-preview__value" id="hospitalNumber">9012520_2_13</span>-->
+				<!--</div>-->
+				<!--<div class="weui-form-preview__item">-->
+					<!--<label class="weui-form-preview__label">检查时间</label>-->
+					<!--<span class="weui-form-preview__value" id="inspectDate">2019-05-20</span>-->
+				<!--</div>-->
+				<div class="weui-form-preview__item">
+					<label class="weui-form-preview__label">报告医生</label>
+					<span class="weui-form-preview__value" id="doctor"></span>
+				</div>
+				<div class="weui-form-preview__item">
+					<label class="weui-form-preview__label">病理诊断</label>
+					<span class="weui-form-preview__value" id="result">
+					</span>
+				</div>
+			</div>
+		</div>
+		<a href="javascript:void(0)" onclick="(history.back(-1))" class="weui-btn weui-btn_plain-primary">返回</a>
+		<div class="weui-footer">
+			<p class="weui-footer__links">
+				<!--<a href="javascript:void(0);" class="weui-footer__link">重庆巨辉广科技有限公司</a>-->
+			</p>
+			<p class="weui-footer__text">Copyright © 2013-2025 重庆巨辉广科技有限公司</p>
+		</div>
+	</body>
+	<script type="text/javascript" th:inline="javascript">
+        let inspectNO = [[${param.inspectNO}]];
+		$.ajax({
+			url: '/getInspectInfo',
+			type: 'post',
+			data: {"inspectNO":inspectNO[0]},
+			// dataType: 'json',
+			success: function (result) {
+                let dataParam = result.data;
+                $('#name').html(dataParam["name"]);
+                // $('#sex').html(dataParam["name"]);
+                // $('#age').html(dataParam["name"]);
+                // $('#hospitalNumber').html(dataParam["hospitalNumber"]);
+                // $('#inspectDate').html(dataParam["name"]);
+                let data = JSON.parse(dataParam["data"][0]);
+                $('#billName').html(data.BGZD);
+                $('#doctor').html(data.BGYS);
+                $('#result').html(data.BGMS);
+            },
+			error: {
+
+			}
+		})
+	</script>
+</html>

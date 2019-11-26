@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+		<title>检验单</title>
+		<link href="/assets/css/TenG3.css" rel="stylesheet"/>
+		<link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+		<link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+		<link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+		<link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet" />
+		<script src="/assets/jquery-1.9.1.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+		<script src="/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/assets/vue.js"></script>
+		<script src="/assets/axios.min.js"></script>
+	</head>
+	<body ontouchstart class="bg">
+		<header class="demos-header">
+			<h1 class="demos-title ">检验单</h1>
+			<p class="demos-sub-title">好看的皮囊千篇一律，有趣的灵魂万里挑一</p>
+		</header>
+		<div class="weui-cells weui-cells_form" id="nspectionReportList">
+
+			<div class="weui-cell ">
+				<div class="weui-cell__hd">
+					<label for="date" class="weui-label ">开始日期</label>
+				</div>
+				<div class="weui-cell__bd">
+					<input class="weui-input" id="starttime" type="text" readonly="">
+				</div>
+			</div>
+			<div class="weui-cell ">
+				<div class="weui-cell__hd">
+					<label for="date" class="weui-label ">结束日期</label>
+				</div>
+				<div class="weui-cell__bd">
+					<input class="weui-input" id="endtime" type="text" readonly="">
+				</div>
+			</div>
+			<div class="weui-cell " style="text-align: center;">
+				<div class="col-xs-6"><button type="button" class="btn btn-default btn-block " v-on:click="begin()" >搜索</button></div>
+				<div class="col-xs-6"><button type="button" class="btn btn-warning btn-block"  v-on:click="reset()" >重置</button></div>
+			</div>
+
+			<div v-if="objlist != null" class="weui-cells" >
+				<p style="text-align: center">暂无相关数据！</p>
+			</div>
+			<div v-else class="weui-cells" >
+				<a v-for="i in objlist" class="weui-cell weui-cell_access cellsColorOne" v-bind:href="'/view/inspectionReport?testNO='+i.NO">
+					<div class="weui-cell__hd">
+						<!--<img v-bind:src="i.imgUrl" class="imgOne">-->
+					</div>
+					<div class="weui-cell__bd">
+						<p>{{ i.BBBW }}</p>
+					</div>
+					<div class="weui-cell__ft">
+						<!--{{ i.time }}-->
+					</div>
+				</a>
+				<!-- 				<a class="weui-cell weui-cell_access cellsColorTwo" href="javascript:;">
+					<div class="weui-cell__hd"><img src="../img/TenG2.png" class="imgOne"></div>
+					<div class="weui-cell__bd">
+						<p>腹部彩超</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<a class="weui-cell weui-cell_access cellsColorOne" href="javascript:;">
+					<div class="weui-cell__hd"><img src="../img/TenG3.png" class="imgOne"></div>
+					<div class="weui-cell__bd">
+						<p>左股骨骨折平扫</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<a class="weui-cell weui-cell_access cellsColorTwo" href="javascript:;">
+					<div class="weui-cell__hd"><img src="../img/TenG4.png" class="imgOne"></div>
+					<div class="weui-cell__bd">
+						<p>B超肠胃投影</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a> -->
+			</div>
+			<div style="height: 30px; width: 100%;"></div>
+			<a href="javascript:void(0)" onclick="(history.back(-1))" class="weui-btn weui-btn_plain-primary">返回</a>
+			<div class="weui-footer">
+				<p class="weui-footer__links">
+					<!--<a href="javascript:void(0);" class="weui-footer__link">百度链接</a>-->
+				</p>
+				<p class="weui-footer__text">Copyright © 2013-2025 重庆巨辉广科技有限公司</p>
+			</div>
+		</div>
+	</body>
+	<script>
+
+
+		//由于这个hmp时间插件,是真的垃圾,默认值设置了还是会触发两次change时间,老子想打人,所以我用了一个i变量来控制!是真的烦,解决不到这个点一次会触发两次change事件
+		/* var i = 0;
+		var j = 0;
+		var myDate = new Date;
+		var year = myDate.getFullYear(); //获取当前年
+		var mon = myDate.getMonth() + 1; //获取当前月
+		var date = myDate.getDate(); //获取当前日 */
+		
+
+		var nspectionReportList=new Vue({
+			el:"#nspectionReportList",
+			data:{
+				objlist:[]
+			},
+			mounted() {
+				var that = this;
+				$("#starttime").calendar();
+				$("#endtime").calendar();
+			},
+			methods:{
+				begin:function(){
+					var that=this;
+					axios.get('/listTest', {
+                        params: {
+                            startTime: $("#starttime").val(),
+                            endTime: $("#endtime").val()
+                        }
+						})
+						.then(function(result) {
+                            let data = result.data.data;
+                            for (let i in data) {
+                                that.objlist = [];
+                                that.objlist.push(JSON.parse(data[i]));
+                            }
+						})
+						.catch(function(error) {
+							console.log(error);
+						})
+				},
+				reset:function(){
+					$("#starttime").val("");
+					$("#endtime").val("");
+				}
+			},
+			//初始化,如果需要页面一进来就有数据,需要取消注释下面代码
+			/* created() {
+				var that=this;
+				axios.get('../Json/listInspection.json', {
+				
+					})
+					.then(function(result) {
+						that.objlist=result.data.objList2;
+					})
+					.catch(function(error) {
+						console.log(error);
+					})
+			} */
+		})
+	</script>
+</html>

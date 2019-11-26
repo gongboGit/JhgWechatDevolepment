@@ -1,0 +1,35 @@
+{
+	"objList": [{
+		"name": "龚小猪",
+		"departmentName":"脊柱科",
+		"time":"2019-12-22",
+		"money":"5",
+		"diagnosis":"腰椎第一骨折",
+		"doctorName":"李狗蛋"
+	},{
+		"name": "龚肥猪",
+		"departmentName":"内外科",
+		"time":"2011-11-02",
+		"money":"10",
+		"diagnosis":"糖尿病足",
+		"doctorName":"李全蛋"
+	},{
+		"name": "龚野猪",
+		"departmentName":"神经科",
+		"time":"2018-05-08",
+		"money":"5",
+		"diagnosis":"内分泌失调",
+		"doctorName":"李铁柱"
+	}],
+	"objListD": [{
+		"name": "梁楹",
+		"departmentName":"正骨科",
+		"time":"2016-06-06",
+		"money":"20"
+	},{
+		"name": "赵文远",
+		"departmentName":"妇产科",
+		"time":"2011-04-02",
+		"money":"15"
+	}]
+}

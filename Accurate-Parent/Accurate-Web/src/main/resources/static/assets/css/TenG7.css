@@ -1,0 +1,13 @@
+.mdui-tab-indicator{
+	background-color: #18D7D7 !important;
+}
+/* .mdui-tab .mdui-tab-active{
+	color:#4cae4c !important;
+} */
+.mdui-textfield-input:hover{
+	border-bottom-color:#4cae4c!important ;
+	box-shadow:1px 0 0 #4cae4c!important;
+}
+.mdui-textfield-focus .mdui-icon{
+	color:#4cae4c!important ;
+}

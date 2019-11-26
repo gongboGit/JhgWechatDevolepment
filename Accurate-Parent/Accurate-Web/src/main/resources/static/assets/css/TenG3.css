@@ -1,0 +1,54 @@
+html{
+	font-size: 62.5%;
+}
+/* .bg{
+	background: linear-gradient(45deg, #D5D5D5, #FFFFFF);
+	height: 100%;
+} */
+.divOne{
+	font-size: 25px;
+	height: 60px !important;
+	width: 100%;
+	margin-top: 20px;
+	border: 1px red solid;
+}
+.mdui-col, [class*=mdui-col-lg-], [class*=mdui-col-md-], [class*=mdui-col-sm-], [class*=mdui-col-xl-], [class*=mdui-col-xs-] {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.divTwo{
+	background-color: #D5D5D5 !important;
+	color: rgba(0, 0, 0, 0.25) !important;
+}
+.divThree{
+	color:33ccff !important;
+}
+/* .divThree{
+	width: 75px !important;
+} */
+/*.divFour{
+	background-color:#EEEEEE !important;
+	 padding-bottom: 20px !important;
+	padding-top: 17px !important; 
+}*/
+.weui-cells {
+	margin-top: 0px !important;
+}
+.imgOne{
+	width: 30px;
+}
+.weui-cell__bd p{
+	color: #919191 !important;
+}
+.weui-label{
+	color: #33ccff !important;
+}
+/* .demos-title {
+	color: #3399cc !important;
+} */
+.cellsColorOne{
+	background-color: #FFFFFF !important;
+}
+.cellsColorTwo{
+	background-color: #F7F7F7 !important;
+}

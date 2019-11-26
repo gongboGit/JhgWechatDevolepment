@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>检验报告单</title>
+		<link href="/assets/css/TenG2.css" rel="stylesheet" />
+		<link href="/assets/css/main.css" rel="stylesheet" />
+		<link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet" />
+		<link href="/assets/bootstrap/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+		<link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet" />
+		<script src="/assets/jquery-1.9.1.min.js"></script>
+		<script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+		<script src="/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+		<script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+		<script src="/assets/js/common.js"></script>
+	</head>
+	<body class="body">
+		<div class="mdui-container-fluid">
+			<div class="mdui-row">
+				<!-- <div class="mdui-col-xs-12 mdui-col-md-12">
+					<div class="divOne">
+						<span>XXXX医院检查报告单</span><br />
+						&nbsp;&nbsp;日期：<label>2099-10-25 11:23:23</label>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						姓名：<label>TenG先森</label>
+					</div>
+				</div> -->
+				<div class="mdui-col-xs-12 mdui-col-md-12">
+					<div class="mdui-table-fluid">
+						<table class="mdui-table tableOne">
+							<thead>
+								<tr>
+									<th colspan="4" class="thOne">
+										<!--<img src="/assets/images/TenG7.png" width="40px" height="40px"/>-->
+										<span style="text-align: center;font-size: 2rem;">[[#{company.name}]]检验报告单</span>
+									</th>
+								</tr>
+							</thead>
+							<thead>
+								<tr>
+									<th colspan="3" id="testDate">
+										日期：2018-11-11 23:23:23
+									</th>
+									<th colspan="1" id="name">
+										姓名：TenG三火
+									</th>
+								</tr>
+							</thead>
+							<thead>
+								<tr>
+									<th class="thOne thTwo">
+										<span class="iconfont" style="font-size: 1.5rem">&#xe651;</span>
+										<!--<img src="/assets/images/TenG1.png" width="30px" height="30px"/>-->
+										<br />项目名称
+									</th>
+									<th class="thOne thTwo">
+										<span class="iconfont" style="font-size: 1.5rem">&#xe674;</span>
+										<!--<img src="/assets/images/TenG2.png" width="30px" height="30px"/>-->
+										<br />单位
+									</th>
+									<th class="thOne thTwo">
+										<span class="iconfont" style="font-size: 1.5rem">&#xe75a;</span>
+										<!--<img src="/assets/images/TenG3.png" width="30px" height="30px"/>-->
+										<br />参考值
+									</th>
+									<th class="thOne thTwo">
+										<span class="iconfont" style="font-size: 1.5rem">&#xe806;</span>
+										<!--<img src="/assets/images/TenG4.png" width="30px" height="30px"/>-->
+										<br />实际值
+									</th>
+								</tr>
+							</thead>
+							<tbody id="tableTbody">
+								
+							</tbody>
+							<thead>
+								<tr>
+									<th colspan="4" style="text-align: center;">
+										<button class="mdui-btn mdui-btn-raised" onclick="(history.back(-1))">返回</button>
+									</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+	</body>
+	<script th:inline="javascript">
+		/* $(function {
+			var oTable = new TableInit();
+			oTable.Init();
+		})
+		var TbaleInit =function(){
+			var oTableInit = new Object();
+			oTableInit.Init=function(){
+				url:'XXXXXX',
+				method: 'get',
+				striped: true, 
+				showRefresh: true,
+				height: 50, 
+			}
+		} */
+		function getInto(){
+			$.ajax({
+				type: "post",
+				url: "/getTestInfo",
+				data: {"testNO": [[${param.testNO}]][0]},
+				dataType: "JSON",
+				success: function(result) {
+                    $('#name').html("姓名："+(result.data)["name"]);
+					let data = (result.data)["data"];
+                    let str = "";
+                    for (let key in data) {
+                        str += "<tr><td colspan='4' class='jyName'>" + JSON.parse(key).BBBW + "</td></tr>"
+						for (let i in data[key]) {
+						    str += "<tr><td class='tdOne'>"+
+                                JSON.parse(data[key][i]).JYXMMC +"</td><td class='tdOne'>"+
+                                JSON.parse(data[key][i]).JYJGDW +"</td><td class='tdOne'>"+
+                                JSON.parse(data[key][i]).CKFW +"</td><td class='tdOne'>"+
+                                JSON.parse(data[key][i]).JYJG +"</td></tr>"
+						}
+						str += "<tr><td colspan='4' >结论：<span class='jyjl'>"+ "未见明显异常" +"</span></td></tr>"
+					}
+                    $("#tableTbody").html(str);
+				},
+				error: function() {
+				}
+			})
+		}
+		getInto();
+	</script>
+</html>

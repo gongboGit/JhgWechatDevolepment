@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>微信支付</title>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/WxPay/weChatPay.js"></script>
+    <script src="/jweixin-1.4.0.js"></script>
+</head>
+<body>
+<div align="center">
+    <p>生成微信支付订单中，请稍候......</p>
+</div>
+<script th:inline="javascript">
+    let description = [[${param.description}]][0];
+    let totalFee = [[${param.totalFee}]][0];
+    let data = [[${param.data}]][0];
+    $(function () {
+        WeChatPay(description, totalFee, data, function (result,id) {
+            if (result == "get_brand_wcpay_request:ok") {
+                //支付成功后跳转的页面
+                $.toast('支付成功',function () {
+                    location.href = '/personalCenterThree';
+                });
+            } else if (result == "get_brand_wcpay_request:cancel") {
+                    failHandle('支付取消','cancel',id);
+                // $.toast('支付取消','cancel', function () {
+                //     window.history.back();
+                // });
+            } else if (result == "get_brand_wcpay_request:fail") {
+                    failHandle('支付失败','forbidden',id);
+                // $.toast('支付失败','forbidden',function () {
+                //     window.history.back();
+                // });
+                    WeixinJSBridge.call('closeWindow');
+            }
+        });
+    })
+</script>
+</body>
+</html>

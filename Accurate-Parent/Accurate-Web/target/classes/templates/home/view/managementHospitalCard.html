@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>管理就诊卡</title>
+    <link href="/assets/css/TenG8.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/assets/vue.js"></script>
+    <script src="/assets/axios.min.js"></script>
+    <script src="/assets/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div id="example6">
+    <div class="mdui-tab" mdui-tab>
+        <a href="#example6-tab1" class="mdui-ripple">
+            <label>常用就诊卡</label>
+        </a>
+        <a href="#example6-tab2" class="mdui-ripple">
+            <label>已删除</label>
+        </a>
+    </div>
+    <div class="col-xs-12" style="height: 10px;">
+
+    </div>
+    <div class="col-xs-12" style="background-color: white;">
+        <a class="weui-cell weui-cell_access " href="/view/bindPatient">
+            <div class="weui-cell__hd">
+                <img src="/assets/images/添加.png" style="width: 30px; height: 30px;"></div>
+            <div class="weui-cell__bd">
+                <p>添加就诊卡</p>
+            </div>
+        </a>
+    </div>
+    <div id="example6-tab1">
+        <div v-for="i in listJZK">
+            <div class="col-xs-12" style="height: 10px;">
+
+            </div>
+            <div class="col-xs-12 manageJZK_panel">
+                <div class="col-xs-12">
+                    <h4 style="color:#5CB85C ;">{{ i.trueName }}</h4>
+                </div>
+                <div class="col-xs-5">身份证号</div>
+                <div class="col-xs-7">{{ i.idCard }}</div>
+                <div style="width: 100%;height: 1px;background-color:rgba(0,0,0,0.24);float: left;margin: 10px 0px;"></div>
+                <div class="col-xs-4"></div>
+
+                <div v-if="i.mainFlag == '1'">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-3" v-on:click="mainJZK(i.idCard)">
+                        <!--&#xe14c;-->
+                        <i class="mdui-icon material-icons"></i>主就诊卡
+                    </div>
+                </div>
+                <div class="col-xs-5" v-on:click="mainJZK(i.idCard)" v-else>
+                    <i class="mdui-icon material-icons">&#xe5ca;</i>设置为主就诊卡
+                </div>
+
+
+                <div class="col-xs-3" v-on:click="deleteSay(i.trueName,i.idCard)"><i class="mdui-icon material-icons">&#xe928;</i>删除
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="example6-tab2">
+        <div v-for="i in deleteListJZK">
+            <div class="col-xs-12" style="height: 10px;">
+
+            </div>
+            <div class="col-xs-12 manageJZK_panel">
+                <div class="col-xs-12">
+                    <h4 style="color:#5CB85C ;">{{ i.trueName }}</h4>
+                </div>
+                <div class="col-xs-5">身份证号</div>
+                <div class="col-xs-7">{{ i.idCard }}</div>
+                <div style="width: 100%;height: 1px;background-color:rgba(0,0,0,0.24);float: left;margin: 10px 0px;"></div>
+                <div class="col-xs-9"></div>
+                <div class="col-xs-3" v-on:click="say(i.trueName,i.idCard)"><i
+                        class="mdui-icon material-icons">&#xe16d;</i>恢复
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12" style="height: 5px;">
+
+    </div>
+    <a href="javascript:void(0)" onclick="(history.back(-1))" class="weui-btn weui-btn_plain-primary">返回</a>
+    <div class="weui-footer">
+        <p class="weui-footer__links">
+            <!--<a href="javascript:void(0);" class="weui-footer__link">TenG叁火</a>-->
+        </p>
+        <p class="weui-footer__text">Copyright © 2013-2025 重庆巨辉广科技有限公司</p>
+    </div>
+
+</div>
+</body>
+<script>
+    var manageJZK = new Vue({
+        el: "#example6",
+        data: {
+            listJZK: '',
+            deleteListJZK: '',
+        },
+        created() {
+            let that = this;
+            axios.get('/listHospitalCard', {})
+                .then(function (result) {
+                    that.listJZK = result.data.data["trueEnableList"];
+                    that.deleteListJZK = result.data.data["falseEnableList"];
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        },
+        methods: {
+            deleteSay: function (name, SFZH) {
+                var that = this;
+                for (var i = 0; i < that.listJZK.length; i++) {
+                    if (that.listJZK[i].idCard == SFZH && that.listJZK[i].trueName == name) {
+                        if (that.listJZK[i].mainFlag == 0) {
+                            //点击删除
+                            axios.get("/updateHospitalCardStatus", {
+                                params: {
+                                    idCard: SFZH,
+                                    enable: 1
+                                }
+                            })
+                                .then(function (result) {
+                                    if (result.data.code == 1) {
+                                        that.deleteListJZK.push(that.listJZK[i]);
+                                        that.listJZK.splice(i, 1);
+                                        $.toast("操作成功");
+                                    } else {
+                                        $.toast("取消操作", "cancel");
+                                    }
+                                })
+                                .catch(function (error) {
+                                    $.toast(error, "cancel");
+                                });
+                            return;
+                        } else {
+                            mdui.alert("该就诊卡是主就诊卡，不允许删除");
+                            return;
+                        }
+                    }
+                }
+
+            },
+            mainJZK: function (SFZH) {
+                var that = this;
+                for (var i = 0; i < that.listJZK.length; i++) {
+                    if (that.listJZK[i].idCard == SFZH && that.listJZK[i].mainFlag == 0) {
+                        //改变后台的值
+                        axios.get('/updateHospitalCardMainFlag', {
+                            params: {
+                                idCard: SFZH,
+                            }
+                        })
+                        //返回成功
+                            .then(function (result) {
+                                if (result.data.code == 1) {
+                                    $.toast("操作成功");
+                                    for (var j = 0; j < that.listJZK.length; j++) {
+                                        if (that.listJZK[j].mainFlag == 1) {
+                                            that.listJZK[j].mainFlag = 0;
+                                        }
+                                    }
+                                    that.listJZK[i].mainFlag = 1;
+                                } else {
+                                    $.toast("修改失败！")
+                                }
+                            })
+                            //返回异常
+                            .catch(function (error) {
+                                $.toast("修改失败！")
+                            });
+                        return;
+                    } else if (that.listJZK[i].idCard == SFZH && that.listJZK[i].mainFlag == 1) {
+                        mdui.alert("该就诊卡已经是主就诊卡");
+                        return;
+                    }
+                }
+            },
+            say: function (name, SFZH) {
+                var that = this;
+                for (var i = 0; i < that.deleteListJZK.length; i++) {
+                    if (that.deleteListJZK[i].idCard == SFZH && that.deleteListJZK[i].trueName == name) {
+                        that.listJZK.push(that.deleteListJZK[i]);
+                        that.deleteListJZK.splice(i, 1);
+                        return;
+                    }
+                }
+                //点击恢复
+                axios.get("/updateHospitalCardStatus", {
+                    params: {
+                        idCard: SFZH,
+                        enable: 0
+                    }
+                })
+                    .then(function (result) {
+                        if (result.data.code == 1) {
+                            $.toast("操作成功");
+                        } else {
+                            $.toast("取消操作", "cancel");
+                        }
+                    })
+                    .catch(function (error) {
+                        $.toast(error, "cancel");
+                    })
+            }
+        }
+    })
+</script>
+</html>

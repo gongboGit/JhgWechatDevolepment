@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>体检报告单</title>
+    <link href="/assets/css/TenG5.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/jsPdf.debug.js"></script>
+    <script src="/assets/jsPdf.debug.js"></script>
+    <script src="/assets/html2canvas.js"></script>
+    <script src="/assets/FileSaver.min.js"></script>
+    <script src="/assets/js/common.js"></script>
+    <style>
+        .wxtip {
+            background: rgba(0, 0, 0, 0.8);
+            text-align: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 998;
+            display: none;
+        }
+
+        .wxtip-icon {
+            width: 52px;
+            height: 67px;
+            background: url(weixin-tip.png) no-repeat;
+            display: block;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        .wxtip-txt {
+            margin-top: 107px;
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body ontouchstart>
+<div id="pdf">
+    <header class="demos-header">
+        <h1 class="demos-title ">体检报告单</h1>
+        <p class="demos-sub-title" th:text="#{company.name}"></p>
+    </header>
+    <div class="mdui-table-fluid" id="result">
+        <!--<table class="mdui-table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+        <!--<th colspan="2" class="divTwo">一般项目</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr>-->
+        <!--<th width="50%">项目名称</th>-->
+        <!--<th width="50%">结果</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>收缩肌</td>-->
+        <!--<td>120</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>舒张压</td>-->
+        <!--<td>80</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>检查日期：2016-09-09</td>-->
+        <!--<td>检查医生：张霞</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+        <!--<table class="mdui-table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+        <!--<th colspan="2" class="divTwo">内科</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr>-->
+        <!--<th width="50%">项目名称</th>-->
+        <!--<th width="50%">结果</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>肺</td>-->
+        <!--<td>两肺呼吸音清晰,未闻及干湿性啰音</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>呼吸音</td>-->
+        <!--<td>未见异常</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>心率</td>-->
+        <!--<td>72</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>心律</td>-->
+        <!--<td>正常</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>心音</td>-->
+        <!--<td>正常</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>杂音</td>-->
+        <!--<td>无杂音</td>-->
+        <!--</tr>-->
+        <!--<tr class="mdui-table-col-numeric">-->
+        <!--<td>检查日期：2016-09-22</td>-->
+        <!--<td>检查医生：李淼森</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!--</table>-->
+        <!--<table class="mdui-table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+        <!--<th colspan="2" class="divTwo">外科</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr>-->
+        <!--<th width="50%">项目名称</th>-->
+        <!--<th width="50%">结果</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>淋巴结</td>-->
+        <!--<td>未见异常</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>甲状腺</td>-->
+        <!--<td>未见异常</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td>检查日期：2016-02-13</td>-->
+        <!--<td>检查医生：大壮</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+    </div>
+</div>
+
+<table class="mdui-table">
+    <thead>
+    <tr>
+        <th colspan="2" style="text-align: center;padding-right: 24px !important;">
+            <button class="mdui-btn mdui-btn-raised" onclick="(history.back(-1))">返回</button>
+        </th>
+        <th colspan="2" style="text-align: center;padding-right: 24px !important;">
+            <button class="mdui-btn mdui-btn-raised" onclick="makePdf()">下载</button>
+        </th>
+    </tr>
+    </thead>
+</table>
+</body>
+<script th:inline="javascript">
+    function fh() {
+        window.location.href = "/view/physicalExaminationList"
+    }
+    let TJBH = [[${param.TJBH}]];
+ //  let jy = sessionStorage.getItem(TJBH[0]);
+    $.ajax({
+        url: '/getPhysicalExaminationInfo',
+        type: 'post',
+        data: {"TJBH": TJBH[0]},
+        dataType: 'json',
+        success: function (result) {
+            if (result.code == 1) {
+                let str = '';
+                let data = result.data;
+                str+= "<h4  >体检综述与建议</h2>\n" +
+                   "<textarea autoHeight=\"true\" readonly=\"readonly\"\n  style='width:100%;BORDER-BOTTOM: 0px solid; BORDER-LEFT: 0px solid; BORDER-RIGHT: 0px solid; BORDER-TOP: 0px solid;'>"+
+                    "</textarea>\n";
+                for (let key in data) {
+                    str += "<table class=\"mdui-table\">\n" +
+                        "\t\t\t\t<thead>\n" +
+                        "\t\t\t\t\t<tr>\n" +
+                        "\t\t\t\t\t\t<th colspan=\"2\" class=\"divTwo\">" + JSON.parse(key).MC + "</th>\n" +
+                        "\t\t\t\t\t</tr>\n" +
+                        "\t\t\t\t</thead>\n" +
+                        "\t\t\t\t<tbody>\n" +
+                        "\t\t\t\t\t<tr>\n" +
+                        "\t\t\t\t\t\t<th width=\"33%\">项目名称</th>\n" +
+                        "\t\t\t\t\t\t<th width=\"33%\">结果</th>\n" +
+                        "\t\t\t\t\t\t<th width=\"33%\">参考值</th>\n" +
+                        "\t\t\t\t\t</tr>\n";
+                    for (let i in data[key]) {
+                        str += "\t\t\t\t\t<tr>\n" +
+                            "\t\t\t\t\t\t<td>" + JSON.parse(data[key][i]).MC + "</td>\n" +
+                            "\t\t\t\t\t\t<td>" + JSON.parse(data[key][i]).JG + "</td>\n" +
+                            "\t\t\t\t\t\t<td>" + JSON.parse(data[key][i]).CKZ + "</td>\n" +
+                            "\t\t\t\t\t</tr>\n";
+                    }
+                    str += "\t\t\t\t\t<tr>\n" +
+                        "\t\t\t\t\t\t<td>检查日期：" + JSON.parse(key).JCRQ + "</td>\n" +
+                        "\t\t\t\t\t\t<td>检查医生：" + JSON.parse(key).JCYS + "</td>\n" +
+                        "\t\t\t\t\t</tr>\n" +
+                        "\t\t\t\t</tbody>\n" +
+                        "\t\t\t</table>";
+                }
+                $('#result').html(str + $('#result').html());
+                $('textarea[autoHeight]').val(sessionStorage.getItem(TJBH[0]));
+                $('textarea[autoHeight]').autoHeight();
+            }
+        },
+        error: function () {
+
+        }
+    });
+    $.fn.autoHeight = function(){
+        function autoHeight(elem){
+            elem.style.height = 'auto';
+            elem.scrollTop = 0; //防抖动
+            elem.style.height = elem.scrollHeight + 'px';
+        }
+        this.each(function(){
+            autoHeight(this);
+            $(this).on('keyup', function(){
+                autoHeight(this);
+            });
+        });
+    }
+
+    //将html页面导出.pdf格式文件(适用于jQuery、vue库)
+    function makePdf() {
+        // let scrollHeight = document.documentElement.scrollTop;
+        // document.documentElement.offsetTop = 0;
+        // document.documentElement.scrollTop = 0;
+        window.scrollTo(0,0);
+        if(confirm("您确认下载该PDF文件吗?")) {
+            $.showLoading("PDF准备中");
+            // 生成PDF
+            let target = document.getElementById("pdf");
+            target.style.background = "#FFFFFF";
+
+            html2canvas(target, {
+                onrendered: function (canvas) {
+                    var contentWidth = canvas.width;
+                    var contentHeight = canvas.height;
+
+                    //一页pdf显示html页面生成的canvas高度;
+                    var pageHeight = contentWidth / 592.28 * 841.89;
+                    //未生成pdf的html页面高度
+                    var leftHeight = contentHeight;
+                    //页面偏移
+                    var position = 0;
+                    //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+                    var imgWidth = 595.28;
+                    var imgHeight = 592.28 / contentWidth * contentHeight;
+
+                    var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                    var pdf = new jsPDF('', 'pt', 'a4');
+
+                    //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                    //当内容未超过pdf一页显示的范围，无需分页
+                    if (leftHeight < pageHeight) {
+                        pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                    } else {
+                        while (leftHeight > 0) {
+                            pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                            leftHeight -= pageHeight;
+                            position -= 841.89;
+                            //避免添加空白页
+                            if (leftHeight > 0) {
+                                pdf.addPage();
+                            }
+                        }
+                    }
+                    generatePdf(pdf.output('datauristring').substring(28), function (value) {
+                        console.info(value);
+                        window.location.href = "/downloadPdf?fileName=" + value;
+                    });
+                    // document.documentElement.scrollTop = scrollHeight;
+                }
+            });
+        }
+    };
+
+    /**
+     * 传输后台
+     */
+    function generatePdf(file, callback) {
+        $.ajax({
+            url: '/pdf',
+            type: "POST",
+            data: {
+                file: file
+            }
+        }).success(function (result) {
+            console.info(result.data)
+            callback(result.data);
+        });
+    }
+</script>
+</html>

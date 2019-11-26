@@ -1,0 +1,107 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "49690",
+      "name": "卡片",
+      "font_class": "12",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "3104498",
+      "name": "导航",
+      "font_class": "daohang",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "3767590",
+      "name": "就诊记录",
+      "font_class": "jiuzhenjilu",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "5197622",
+      "name": "智能电子",
+      "font_class": "zhinengdianzi",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "5484013",
+      "name": "导航",
+      "font_class": "daohang1",
+      "unicode": "e75f",
+      "unicode_decimal": 59231
+    },
+    {
+      "icon_id": "6829455",
+      "name": "满意",
+      "font_class": "manyi",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "7872883",
+      "name": "专家",
+      "font_class": "zhuanjia",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "8115797",
+      "name": "检验报告单",
+      "font_class": "jianyanbaogaodan",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "8669717",
+      "name": "体检报告单",
+      "font_class": "tijianbaogaodan",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "8713099",
+      "name": "预约查档",
+      "font_class": "yuyuechadang",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "8713107",
+      "name": "异地就医备案 记录查询",
+      "font_class": "yidijiuyibeianjiluchaxun",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "10038537",
+      "name": "检查报告单",
+      "font_class": "jianchabaogaodan",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "10123778",
+      "name": "排队-灰",
+      "font_class": "paidui-hui",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "11276906",
+      "name": "停车",
+      "font_class": "tingche",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    }
+  ]
+}

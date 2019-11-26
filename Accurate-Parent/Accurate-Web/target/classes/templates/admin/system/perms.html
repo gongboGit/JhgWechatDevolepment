@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/jquery-treegrid/css/jquery.treegrid.css"/>
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <script src="/assets/bootstrap/jquery-treegrid/js/jquery.treegrid.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/extensions/treegrid/bootstrap-table-treegrid.js"></script>
+    <script src="/assets/util.js"></script>
+</head>
+<body>
+<section layout:fragment="navTools">
+    <div class="row">
+        <div class="col-xs-6">
+            <section layout:fragment="rightNav">
+                <div style="float:left;">
+                    <select class="form-control" id="roleSelect"
+                            style="width:250px;height:42px;margin-right:10px;">
+                        <option value="">选择角色</option>
+                        <th:block th:each="role:${roles}">
+                            <option th:value="${role.id }">[[${role.name}]]</option>
+                        </th:block>
+                    </select>
+                    <script th:inline="javascript">
+                        $(function () {
+                            let arrays = [[${roleId}]];
+                            $('#roleSelect').val(arrays);
+                            $('#roleSelect').change(function () {
+                                $('#table').bootstrapTable('destroy');
+                                getTreeTable($(this).val());
+                            });
+                            $('#save_btn').click(function () {
+                                let role = $('#roleSelect').val();
+                                if (!role) {
+                                    MsgBox.alert('请选择要操作的角色');
+                                    return;
+                                }
+                                let selRows = $table.bootstrapTable("getSelections");
+                                let ls = [];
+                                selRows.forEach(function (row) {
+                                    ls.push({
+                                        roleId: role,
+                                        permissionId: row.id
+                                    });
+                                });
+
+                                let requestData = {
+                                    roleId: role,
+                                    ls: ls
+                                };
+                                console.info(JSON.stringify(requestData))
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/admin/ajax/role2perms",
+                                    dataType: "json",
+                                    data: JSON.stringify(requestData),
+                                    contentType: "application/json",
+                                    success: function (data) {
+                                        MsgBox.alert(data.msg);
+                                    },
+                                    error: function (data) {
+                                        MsgBox.alert(JSON.stringify(value));
+                                    }
+                                })
+                            })
+                        })
+                    </script>
+                </div>
+                <a class="btn btn-info" id="save_btn">
+                    <i class="ace-icon fa fa-check bigger-110"></i> 保存
+                </a>
+            </section>
+        </div>
+    </div>
+    <div class="hr hr-18 dotted hr-double"></div>
+</section>
+
+<div layout:fragment="content">
+    <table id="table"></table>
+    <script th:inline="javascript">
+        var $table = $('#table');
+
+        $(function () {
+            getTreeTable(null);
+        });
+
+        function getTreeTable(roleId) {
+            let url = "/admin/ajax/listPermission";
+            if (roleId) {
+                url = "/admin/ajax/listPermission?roleId=" + roleId;
+            }
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+
+                    $table.bootstrapTable({
+                        // url:url,
+                        method: 'post',
+                        data: result,
+                        idField: 'id',
+                        dataType: 'json',
+                        columns: [
+                            {
+                                field: 'check', checkbox: true, formatter: function (value, row, index) {
+                                    if (row.checked == 'true') {
+                                        return {
+                                            checked: true,
+                                            disabled: false
+                                        };
+                                    } else {
+                                        return {
+                                            checked: false,
+                                            disabled: false
+                                        };
+                                    }
+                                }
+                            },
+                            {field: 'title', title: '名称'},
+                            {
+                                field: 'url',
+                                title: 'url',
+                                formatter: function (value, row, index) {
+                                    if (isBlank(value)) {
+                                        return '-';
+                                    } else {
+                                        return value;
+                                    }
+                                }
+                            },
+                            {field: 'controller', title: 'controller',
+                                formatter: function (value, row, index) {
+                                    if (isBlank(value)) {
+                                        return '-';
+                                    } else {
+                                        return value;
+                                    }
+                                }},
+                            {field: 'method', title: 'method',
+                                formatter: function (value, row, index) {
+                                    if (isBlank(value)) {
+                                        return '-';
+                                    } else {
+                                        return value;
+                                    }
+                                }},
+                            {field: 'icon', title: '图标',
+                                formatter: function (value, row, index) {
+                                    if (isBlank(value)) {
+                                        return '-';
+                                    } else {
+                                        return value;
+                                    }
+                                }},
+                            {
+                                field: 'enabled',
+                                title: '是否禁用',
+                                align: 'center',
+                                formatter: function (value, row, index) {
+                                    if (value == 1) {
+                                        // return '<span class="label label-success">正常</span>';
+                                        return '正常';
+                                    } else {
+                                        return '禁用';
+                                    }
+                                }
+                            },
+                            {
+                                field: 'isShow',
+                                title: '是否显示',
+                                align: 'center',
+                                formatter: function (value, row, index) {
+                                    if (value == 1) {
+                                        return '是';
+                                    } else {
+                                        return '否';
+                                    }
+                                }
+                            },
+                            {field: 'createTime', title: '创建时间', align: 'center'},
+                            {
+                                field: 'flag', title: '类型', align: 'center', formatter: function (value, row, index) {
+                                    if (value == 1) {
+                                        return '后台管理';
+                                    } else {
+                                        return '微信前台';
+                                    }
+                                }
+                            },
+                            {
+                                field: 'operate',
+                                title: '操作',
+                                align: 'center',
+                                events: operateEvents,
+                                formatter: 'operateFormatter'
+                            }
+                        ],
+
+                        // bootstrap-table-treegrid.js 插件配置 -- start
+
+                        //在哪一列展开树形
+                        treeShowField: 'title',
+                        //指定父id列
+                        parentIdField: 'pid',
+
+                        onResetView: function (data) {
+                            //console.log('load');
+                            $table.treegrid({
+                                initialState: 'collapsed',// 所有节点都折叠
+                                // initialState: 'expanded',// 所有节点都展开，默认展开
+                                treeColumn: 1,
+                                // expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
+                                // expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                                onChange: function () {
+                                    $table.bootstrapTable('resetWidth');
+                                }
+                            });
+
+                            //只展开树形的第一级节点
+                            $table.treegrid('getRootNodes').treegrid('expand');
+
+                        },
+                        onCheck: function (row) {
+                            var datas = $table.bootstrapTable('getData');
+                            // 勾选子类
+                            selectChilds(datas, row, "id", "pid", true);
+                            // 勾选父类
+                            selectParentChecked(datas, row, "id", "pid");
+
+                            var selRows = $table.bootstrapTable("getSelections");
+                            if (selRows.length == datas.length) {
+                                $('th:first input').prop("checked", true);
+                            }
+                            // 刷新数据
+                            // $table.bootstrapTable('load', datas);
+                        },
+
+                        onUncheck: function (row) {
+                            var datas = $table.bootstrapTable('getData');
+                            selectChilds(datas, row, "id", "pid", false);
+                            var selRows = $table.bootstrapTable("getSelections");
+                            if (selRows.length == datas.length) {
+                                $('th:first input').prop("checked", true);
+                            }
+                            // $table.bootstrapTable('load', datas);
+                        },
+                        // bootstrap-table-treetreegrid.js 插件配置 -- end
+                    });
+                }
+            })
+        }
+
+        // 格式化按钮
+        function operateFormatter(value, row, index) {
+            return [
+                '<button type="button" class="RoleOfadd btn-small  btn-primary" style="margin-right:15px;"><i class="fa fa-plus" ></i>&nbsp;新增</button>',
+                '<button type="button" class="RoleOfedit btn-small   btn-primary" style="margin-right:15px;"><i class="fa fa-pencil-square-o" ></i>&nbsp;修改</button>',
+                '<button type="button" class="RoleOfdelete btn-small   btn-primary" style="margin-right:15px;"><i class="fa fa-trash-o" ></i>&nbsp;删除</button>'
+            ].join('');
+
+        }
+
+        // 格式化类型
+        function typeFormatter(value, row, index) {
+            if (value === 'menu') {
+                return '菜单';
+            }
+            if (value === 'button') {
+                return '按钮';
+            }
+            if (value === 'api') {
+                return '接口';
+            }
+            return '-';
+        }
+
+        // 格式化状态
+        function statusFormatter(value, row, index) {
+            if (value === 1) {
+                return '<span class="label label-success">正常</span>';
+            } else {
+                return '<span class="label label-default">锁定</span>';
+            }
+        }
+
+        //初始化操作按钮的方法
+        window.operateEvents = {
+            'click .RoleOfadd': function (e, value, row, index) {
+                add(row.id);
+            },
+            'click .RoleOfdelete': function (e, value, row, index) {
+                del(row.id);
+            },
+            'click .RoleOfedit': function (e, value, row, index) {
+                update(row.id);
+            }
+        };
+
+        /**
+         * 选中父项时，同时选中子项
+         * @param datas 所有的数据
+         * @param row 当前数据
+         * @param id id 字段名
+         * @param pid 父id字段名
+         * @param checked 状态
+         */
+        function selectChilds(datas, row, id, pid, checked) {
+            // console.info(row, id, pid, checked)
+            for (var i in datas) {
+                if (datas[i][pid] == row[id]) {
+                    let tr = $('tbody tr').eq(i);
+                    if (checked) {
+                        tr.addClass('selected');
+                        tr.find('td:first input').prop("checked", true);
+                    } else {
+                        tr.removeClass('selected');
+                        tr.find('td:first input').removeAttr("checked");
+                    }
+                    datas[i].check = checked;
+                    datas[i].checked = checked;
+                    selectChilds(datas, datas[i], id, pid, checked);
+                }
+                ;
+            }
+        }
+
+        function selectParentChecked(datas, row, id, pid) {
+            for (var i in datas) {
+                if (datas[i][id] == row[pid]) {
+                    let tr = $('tbody tr').eq(i);
+                    tr.addClass('selected');
+                    tr.find('td:first input').prop("checked", true);
+                    datas[i].check = true;
+                    datas[i].checked = true;
+                    selectParentChecked(datas, datas[i], id, pid);
+                }
+                ;
+            }
+        }
+    </script>
+    <script>
+
+        // function test() {
+        //     var selRows = $table.bootstrapTable("getSelections");
+        //     if (selRows.length == 0) {
+        //         alert("请至少选择一行");
+        //         return;
+        //     }
+        //
+        //     var postData = "";
+        //     $.each(selRows, function (i) {
+        //         postData += this.id;
+        //         if (i < selRows.length - 1) {
+        //             postData += "， ";
+        //         }
+        //     });
+        //     alert("你选中行的 id 为：" + postData);
+        //
+        // }
+
+        function add(id) {
+            location.href = "/admin/system/editperm?addid=" + id;
+        }
+
+        function del(id) {
+            MsgBox.confirm('您确定要删除选中的项', function () {
+                $.post('/admin/ajax/permdel', {
+                    ids: id
+                }, function (data) {
+                    MsgBox.alert(data.msg);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                })
+            });
+        }
+
+        function update(id) {
+            location.href = "/admin/system/editperm?id=" + id;
+        }
+
+    </script>
+</div>
+</body>
+</html>

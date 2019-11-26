@@ -1,0 +1,25 @@
+巨辉广
+AppId:wx1e2f879e1064f09f
+AppSecret:77aa6642b615acc9c3372e2d188245a6
+
+康华
+AppId:wxfdad71a0fed578b3
+AppSecret:f422dd01a16f33befc15d992ac8a663c
+url:http://weixin.zoossoft.net/ReceiveMessage
+token:64735194e8884a51b6299afb5c67d1c0
+menu:{"is_menu_open":1,"selfmenu_info":{"button":[{"name":"公益康华","sub_button":{"list":[{"type":"view","name":"医院简介","url":"http://mp.weixin.qq.com/s?__biz=MjM5MjczMzk4OA==&mid=206775902&idx=1&sn=6a9d8c0c8179c63a2be948fc617678a4&scene=18#wechat_redirect"},{"type":"view","name":"渝之康公益","url":"http://mp.weixin.qq.com/s?__biz=MjM5MjczMzk4OA==&mid=2649034742&idx=1&sn=449ba3c7674c9fadc97ddf1add907b1f&chksm=beb061bd89c7e8ab46fdff1350bcddf213b00344125f626a635b71d0968bc851954a4b034b90&scene=18#wechat_redirect"},{"type":"news","name":"中医馆开业","value":"YwGOHZAZeZjCbQPr3OhhwKlE2VKnJA8rrfsX50aPUfI","news_info":{"list":[{"title":"2018年1月18日，康华医院中医馆开业献礼，优惠多多！","author":"","digest":"2018年1月18日，康华医院中医馆开业献礼，技术升级、服务升级、名医坐诊，敬请期待！","show_cover":0,"cover_url":"http://mmbiz.qpic.cn/mmbiz_jpg/0wQOnj0CLhfhRTpq9JicGcOibJpFzWgT3Z7t2wlX3WiaSDN6JrDG9U2v9ibsC3EWbNVcRj8yI27TPo5s2MgXxwks2A/0?wx_fmt=jpeg","content_url":"http://mp.weixin.qq.com/s?__biz=MjM5MjczMzk4OA==&mid=501551154&idx=1&sn=b4cfd663073d99223de8f04f763209a5&chksm=3eb07e7909c7f76f40a7c94917c2f7be6683878d986a6163044884472bd892f01f9a4b2832cb#rd","source_url":"http://www.khyy120.com/"}]}},{"type":"news","name":"院长寄语","value":"YwGOHZAZeZjCbQPr3OhhwPJP3nkujBXI1Y6Ili3Ksdc","news_info":{"list":[{"title":"院长寄语—牢记使命，不忘初心!","author":"重庆康华医院","digest":"弹指一挥间，勿勿十八载，重庆康华医院自建院以来，历经18年变迁，依旧未变的是一代代康华医护人的仁者之心和","show_cover":0,"cover_url":"http://mmbiz.qpic.cn/mmbiz_jpg/0wQOnj0CLhcAwYGyo2FqBnQXg8JxEHCQKfTBZ2uwg72iaXVsf9NTcchgsPS4Smkug5v3rXib5VbK93urB7VrZicDg/0?wx_fmt=jpeg","content_url":"http://mp.weixin.qq.com/s?__biz=MjM5MjczMzk4OA==&mid=501551066&idx=1&sn=b0c95f7e72b591fb64dcdc8b1c3dbdf7&chksm=3eb0619109c7e8875a8ce485d88189a0a4e2e0fa27f5af93b57a84e3e2072c2d07b30cda42cc#rd","source_url":""}]}},{"type":"view","name":"历史文章","url":"http://mp.weixin.qq.com/s?__biz=MjM5MjczMzk4OA==&mid=501550990&idx=1&sn=8e4793f33a72590632c657548ddf0d8b&chksm=3eb061c509c7e8d3562849e8dcff4252e715c1d48af01328c69d80f87e1a15bb825b7bcdd802&scene=18#wechat_redirect"}]}},{"name":"体检中心","sub_button":{"list":[{"type":"miniprogram","name":"体检套餐","url":"http://www.khyy120.com","appid":"wxcf4771fc8b192264","pagepath":"pages/shelf/shelf"}]}},{"name":"我要咨询","sub_button":{"list":[{"type":"view","name":"疾病咨询","url":"http://ala.zoosnet.net/LR/Chatpre.aspx?id=ALA39698880&lng=cn&weixin"},{"type":"news","name":"来院路线","value":"YwGOHZAZeZjCbQPr3OhhwGl8bV1UvXODx85kDGWa4y0","news_info":{"list":[{"title":"来院线路","author":"","digest":"","show_cover":0,"cover_url":"http://mmbiz.qpic.cn/mmbiz_jpg/0wQOnj0CLhdM8Q7UH8EfxQZynAS2XISRXovbrJF5tjuNH9O6ic9tmeialsS661YUKGlmLAwNjnC7VC2W0Qrq2LEQ/0?wx_fmt=jpeg","content_url":"http://mp.weixin.qq.com/s?__biz=MjM5MjczMzk4OA==&mid=501551072&idx=1&sn=72fcadce6c80ca2d691adf8eb57b5fb1&chksm=3eb061ab09c7e8bd774cc7d5a77c14e238570fae40248db3dabef03b7d5aacd43f71df54b064#rd","source_url":""}]}},{"type":"view","name":"官方网站","url":"http://m.khyy120.com"},{"type":"view","name":"免费WiFi","url":"http://wifi.weixin.qq.com/mbl/connect.xhtml?type=1"},{"type":"img","name":"诚信医院","value":"IxN7ILFro2GVB48FKe-wXKG9s52FGdbcxtLPqOOA3Kttzhn3dvjyJI51er4aL0pd"}]}}]}}
+1579346007  123456   服务器密码:kanghuayiyuan120
+http://khyy120.oicp.io/ICommonWeChatApi.asmx?wsdl
+mchId:1293483101
+key:cqkhyy120991205123456789abcdefgh
+操作码:CQkhyy120@2018
+
+郭昌毕
+http://khyy120.oicp.io//ICommonWeChatApi.asmx?wsdl
+商户号：1226679102
+结算账户：123904691410101
+账号：1226679102@1226679102
+密码：506107
+密钥：guochangbiyiyuan72780120gxhuildj
+商户号配置url：http://flgcb.cqjhgyyxx.com/WxPay/
+远程连接密码：297342

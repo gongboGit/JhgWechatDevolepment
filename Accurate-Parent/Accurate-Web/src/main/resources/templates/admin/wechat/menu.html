@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <script src="/assets/layui/layui.js"></script>
+    <link rel="stylesheet" href="/assets/layui/css/layui.css"/>
+    <script src="/assets/Sortable.js"></script>
+    <link rel="stylesheet" href="/assets/layui/css/modules/layer/default/layer.css"/>
+    <link rel="stylesheet" href="/css/menu.css">
+    <style>
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-group">
+        <label for="createMenu">创建自定义菜单</label><textarea id="createMenu"></textarea>
+        <button onclick="createMenu()">创建</button>
+    </div>
+    <div class="form-group">
+        <label for="createConditionalMenu">创建个性化菜单</label><textarea id="createConditionalMenu"></textarea>
+        <button onclick="createConditionalMenu()">创建</button>
+    </div>
+    <div class="form-group">
+        <button onclick="getMenuInfo()">获取菜单</button>
+        <button onclick="deleteMenu()">删除所有菜单</button>
+    </div>
+</div>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        function createMenu() {
+            $.ajax({
+                url: '/admin/menu/createMenu',
+                type: 'post',
+                data: {"menu": $('#createMenu').val()},
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg);
+                }
+            })
+        }
+
+        function createConditionalMenu() {
+            $.ajax({
+                url: '/admin/menu/createConditionalMenu',
+                type: 'post',
+                data: {"menu": $('#createConditionalMenu').val()},
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg);
+                }
+            })
+        }
+
+        function deleteMenu() {
+            $.ajax({
+                url: '/admin/menu/deleteMenu',
+                type: 'get',
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg);
+                }
+            })
+        }
+
+        function getMenuInfo() {
+            $.ajax({
+                url: '/admin/menu/getMenuInfo',
+                type: 'get',
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg);
+                }
+            })
+        }
+    </script>
+</section>
+</body>
+</html>

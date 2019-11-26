@@ -1,0 +1,605 @@
+<!--<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>首页</title>
+    <link href="/assets/css/TenG1.css" rel="stylesheet"/>
+    <link href="/assets/css/main.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <style>
+        html{
+            font-size: 62.5%;
+        }
+    </style>
+</head>
+<body class="mdui-bottom-nav-fixed">
+
+<div class="mdui-bottom-nav bodyTwo">
+    <a href="javascript:;" class="mdui-ripple mdui-bottom-nav-active">
+        <i class="mdui-icon material-icons">history</i>
+        <label>首页</label>
+    </a>
+    <a href="/personalCenterTwo" class="mdui-ripple">
+        <i class="mdui-icon material-icons">favorite</i>
+        <label>医院信息</label>
+    </a>
+    <a href="/personalCenterThree" class="mdui-ripple">
+        <i class="mdui-icon material-icons">location_on</i>
+        <label>我的</label>
+    </a>
+</div>
+
+<div class="mdui-container-fluid">
+    <div class="mdui-row">
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divOne">
+                <div class="divOneOne" onclick="toBindPatient()" >
+                    <div class="divOneOneOne" style="height: 150px;line-height: 150px;margin-top: 0">
+                        &lt;!&ndash;<a href="/view/bindPatient">&ndash;&gt;
+                        <span class="iconfont" style="font-size: 24px">&#xe60c;</span>
+
+                        &lt;!&ndash;<img src="/assets/images/TenG6.png" /><br />&ndash;&gt;
+                        <span style="font-size: 20px ;">添加就诊卡</span>
+                        &lt;!&ndash;</a>&ndash;&gt;
+                        &lt;!&ndash;<span>您暂时还没有添加就诊卡！</span>&ndash;&gt;
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <hr noshade=true color=#E6E6E6 width="100%"/>
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divTwo">
+                &lt;!&ndash;<img src="/assets/images/TenG4.png" />&ndash;&gt;
+                <span>预约挂号</span>
+            </div>
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divShree">
+                <table width="100%" height="100%" border="1">
+                    <tr>
+                        <td width="60%" height="10%">
+                            <span class="iconfont" style="font-size: 21px">&#xe607;</span>
+                            &lt;!&ndash;<img class="divShreeImgOne" src="/assets/images/智能导诊.png" />&ndash;&gt;
+                            <span class="spanOne" style="font-size: 18px">智能导诊</span>
+                            <br/>
+                            <span class="spanTwo" style="font-size: 15px">不知道看什么病？</span>
+                        </td>
+                        <td width="40%" height="10%" rowspan="2" onclick="toAppointmentRegistration()">
+                            &lt;!&ndash;<a href="/view/appointmentRegistration">&ndash;&gt;
+                                <span class="iconfont" style="font-size: 21px">&#xe61a;</span>
+                                &lt;!&ndash;<img class="divShreeImgTwo" src="/assets/images/挂号.png" />&ndash;&gt;
+                            &lt;!&ndash;</a>&ndash;&gt;
+                            <br/>
+                            <span class="spanOne" style="font-size: 18px">预约挂号</span>
+                            <br/>
+                            <span class="spanTwo" style="font-size: 15px">在线免排队挂号！</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="60%" height="10%">
+                            <span class="iconfont" style="font-size: 21px">&#xe606;</span>
+                            &lt;!&ndash;<img class="divShreeImgOne" src="/assets/images/医生.png" />&ndash;&gt;
+                            <span class="spanOne" style="font-size: 18px">今日专家</span>
+                            <br/>
+                            <span class="spanTwo" style="font-size: 15px">不知道看挂谁的号？</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divFour"></div>
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divFive">
+                <table width="100%" height="100%" border="1">
+                    <tr>
+                        &lt;!&ndash;<td width="25%">&ndash;&gt;
+                        &lt;!&ndash;<div class="divFiveOne">&ndash;&gt;
+                        &lt;!&ndash;<img src="/assets/images/医院信息.png" />&ndash;&gt;
+                        &lt;!&ndash;</div>&ndash;&gt;
+                        &lt;!&ndash;<span>医院信息</span>&ndash;&gt;
+                        &lt;!&ndash;</td>&ndash;&gt;
+                        &lt;!&ndash;<td width="25%" onclick="toRegisterRecord()">&ndash;&gt;
+                            &lt;!&ndash;<div class="divFiveOne">&ndash;&gt;
+                                &lt;!&ndash;&lt;!&ndash;<a href="/view/registerRecord">&ndash;&gt;&ndash;&gt;
+                                    &lt;!&ndash;<span class="iconfont" style="font-size: 24px">&#xe60a;</span>&ndash;&gt;
+                                    &lt;!&ndash;&lt;!&ndash;<img src="/assets/images/记录查询.png" />&ndash;&gt;&ndash;&gt;
+                                &lt;!&ndash;&lt;!&ndash;</a>&ndash;&gt;&ndash;&gt;
+                            &lt;!&ndash;</div>&ndash;&gt;
+                            &lt;!&ndash;<span >挂号记录</span>&ndash;&gt;
+                        &lt;!&ndash;</td>&ndash;&gt;
+                        &lt;!&ndash;<td width="25%">&ndash;&gt;
+                        &lt;!&ndash;<div class="divFiveOne">&ndash;&gt;
+                        &lt;!&ndash;<img src="/assets/images/缴费.png" />&ndash;&gt;
+                        &lt;!&ndash;</div>&ndash;&gt;
+                        &lt;!&ndash;<span>门诊缴费</span>&ndash;&gt;
+                        &lt;!&ndash;</td>&ndash;&gt;
+                        <td width="25%" onclick="toInspectionReportList()">
+                            <div class="divFiveOne">
+                                &lt;!&ndash;<a href="/view/inspectionReportList">&ndash;&gt;
+                                    <span class="iconfont" style="font-size: 24px">&#xe6e8;</span>
+                                    &lt;!&ndash;<img src="/assets/images/检验报告单.png" />&ndash;&gt;
+                                &lt;!&ndash;</a>&ndash;&gt;
+                            </div>
+                            <span>检验报告单</span>
+                        </td>
+                        <td width="25%" onclick="toInspectionList()">
+                            <div class="divFiveOne">
+                                &lt;!&ndash;<a href="/view/inspectionList">&ndash;&gt;
+                                    <span class="iconfont" style="font-size: 24px">&#xe7c2;</span>
+                                    &lt;!&ndash;<img src="/assets/images/检查报告单.png"/>&ndash;&gt;
+                                &lt;!&ndash;</a>&ndash;&gt;
+                            </div>
+                            <span>检查报告单</span>
+                        </td>
+                        <td width="25%" onclick="toPhysicalExaminationList()">
+                            <div class="divFiveOne">
+                                &lt;!&ndash;<a href="/view/physicalExaminationList">&ndash;&gt;
+                                <span class="iconfont" style="font-size: 24px">&#xe63c;</span>
+                                &lt;!&ndash;<img src="/assets/images/体检报告单.png"/>&ndash;&gt;
+                                &lt;!&ndash;</a>&ndash;&gt;
+                            </div>
+                            <span >体检报告单</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        &lt;!&ndash;<td width="25%">&ndash;&gt;
+                        &lt;!&ndash;<div class="divFiveOne">&ndash;&gt;
+                        &lt;!&ndash;<img src="/assets/images/候诊.png" />&ndash;&gt;
+                        &lt;!&ndash;</div>&ndash;&gt;
+                        &lt;!&ndash;<span>排队候诊</span>&ndash;&gt;
+                        &lt;!&ndash;</td>&ndash;&gt;
+
+                        &lt;!&ndash;<td width="25%">&ndash;&gt;
+                            &lt;!&ndash;<div class="divFiveOne">&ndash;&gt;
+                                &lt;!&ndash;<img src="/assets/images/智能导诊.png"/>&ndash;&gt;
+                            &lt;!&ndash;</div>&ndash;&gt;
+                            &lt;!&ndash;<span>功能完善中，敬请期待</span>&ndash;&gt;
+                        &lt;!&ndash;</td>&ndash;&gt;
+                    </tr>
+                    <tr>
+                        &lt;!&ndash;<td width="25%">&ndash;&gt;
+                        &lt;!&ndash;<div class="divFiveOne">&ndash;&gt;
+                        &lt;!&ndash;<img src="/assets/images/停车缴费.png" />&ndash;&gt;
+                        &lt;!&ndash;</div>&ndash;&gt;
+                        &lt;!&ndash;<span>停车缴费</span>&ndash;&gt;
+                        &lt;!&ndash;</td>&ndash;&gt;
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function toBindPatient() {
+        location.href = "/view/bindPatient";
+    }
+    function toAppointmentRegistration() {
+        location.href = "/view/appointmentRegistration";
+    }
+    function toRegisterRecord() {
+        location.href = "/view/registerRecord";
+    }
+    function toInspectionReportList() {
+        location.href = "/view/inspectionReportList";
+    }
+    function toInspectionList() {
+        location.href = "/view/inspectionList";
+    }
+    function toPhysicalExaminationList() {
+        location.href = "/view/physicalExaminationList";
+    }
+</script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>首页</title>
+    <link href="/assets/css/TenG1.css" rel="stylesheet"/>
+    <link href="/assets/css/main.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <link href="/assets/iconfont/font_ceary2rhr/iconfont.css" rel="stylesheet" />
+    <link href="/assets/iconfont/font_72feota6f3n/iconfont.css" rel="stylesheet" />
+
+    <script src="/assets/iconfont/font_72feota6f3n/iconfont.js"></script>
+    <script src="/assets/iconfont/font_ceary2rhr/iconfont.js"></script>
+</head>
+<body class="mdui-bottom-nav-fixed">
+
+<div class="mdui-bottom-nav  bodyTwo">
+    <a href="javascript:;" class="mdui-ripple mdui-bottom-nav-active">
+        <i class="mdui-icon material-icons">history</i>
+        <label>首页</label>
+    </a>
+    <a href="/personalCenterTwo" class="mdui-ripple">
+        <i class="mdui-icon material-icons">favorite</i>
+        <label>医院信息</label>
+    </a>
+    <a href="/personalCenterThree" class="mdui-ripple ">
+        <i class="mdui-icon material-icons">location_on</i>
+        <label>我的</label>
+    </a>
+</div>
+<div class="mdui-container-fluid">
+    <div class="mdui-row">
+        <!--卡号信息-->
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divOne">
+                <div class="divOneOne">
+                    <div class="mdui-col-xs-4 mdui-col-md-4">
+                        <div class="mdui-col-xs-12 mdui-col-md-12" ></div>
+                        <svg style="font-size: 90px;" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-renyuanxinxi"></use>
+                        </svg>
+                    </div>
+                    <div class="mdui-col-xs-8 mdui-col-md-8" style="text-align: left;">
+                        <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 15px;"></div>
+
+                        <div class="mdui-col-xs-4 mdui-col-md-4 spanThree" >姓名:</div>
+                        <div class="mdui-col-xs-8 mdui-col-md-8 spanThree" >[[${user.trueName}]]</div>
+
+                        <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 10px;"></div>
+
+                        <div class="mdui-col-xs-4 mdui-col-md-4 spanThree" >手机号:</div>
+                        <div class="mdui-col-xs-8 mdui-col-md-8 spanThree" >[[${user.telephone}]]</div>
+
+                        <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 10px;"></div>
+
+                        <div class="mdui-col-xs-3 mdui-col-md-4 spanThree" >身份证:</div>
+                        <div class="mdui-col-xs-8 mdui-col-md-8 spanThree" >[[${user.idCard}]]</div>
+                    </div>
+                    <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 5px;"></div>
+                    <div class="mdui-col-xs-12 mdui-col-md-12" style="color:rgb(0, 169, 157)" th:text="#{company.name}"></div>
+                </div>
+            </div>
+            <div style="background-color:#F7F7F7;width: 100%; height: 30px; " ></div>
+        </div>
+
+
+        <!--图标-->
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="mdui-col-xs-12 mdui-col-md-12">
+                <div class="divShree">
+                    <div class="mdui-col-xs-4 mdui-col-md-4"  onclick="toPayDetails()">
+                        <div class="mdui-col-xs-1 mdui-col-md-1"></div>
+                        <div class="mdui-col-xs-10 mdui-col-md-10">
+                            <!-- 图标 -->
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 50px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-zhinengdianzi"></use>
+                                </svg>
+                            </div>
+                            <!-- 字体 -->
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span class="spanOne">门诊缴费</span>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span class="spanTwo">门诊自助缴费</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1"></div>
+                    </div>
+
+
+                    <div class="mdui-col-xs-4 mdui-col-md-4"  onclick="toAppointmentRegistration()">
+                        <div class="mdui-col-xs-1 mdui-col-md-1"></div>
+                        <div class="mdui-col-xs-10 mdui-col-md-10">
+                            <!-- 图标 -->
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+
+                                    <svg style="font-size: 50px;margin-bottom: 10%;" class="icon " aria-hidden="true">
+                                        <use xlink:href="#icon-yuyuechadang"></use>
+                                    </svg>
+
+                            </div>
+                            <!-- 字体 -->
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span class="spanOne   ">预约挂号</span>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span class="spanTwo">在线预约专家号</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1"></div>
+                    </div>
+
+
+                    <div class="mdui-col-xs-4 mdui-col-md-4"  onclick="toPhysicalExaminationList()">
+                        <div class="mdui-col-xs-1 mdui-col-md-1"></div>
+                        <div class="mdui-col-xs-10 mdui-col-md-10">
+                            <!-- 图标 -->
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 50px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-jianchabaogaodan"></use>
+                                </svg>
+                            </div>
+                            <!-- 字体 -->
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span class="spanOne">体检报告</span>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span class="spanTwo">体检报告查询</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <div class="divFour"></div>
+        </div>
+        <div class="mdui-col-xs-12 mdui-col-md-12">
+            <!-- 门诊 -->
+            <div class="mdui-col-xs-12 mdui-col-md-12">
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 10px;"></div>
+                <div class="mdui-col-xs-1 mdui-col-md-1">
+                    <div style="height:15px;width:20%;background-color:#18D7D7;margin-left:50%;"></div>
+                </div>
+                <div class="mdui-col-xs-11 mdui-col-md-11" style="font-size: 15px;">
+                    门诊
+                </div>
+                <!-- 门诊第一行 -->
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="margin-top: 3%; text-align: center;">
+                    <div class="mdui-col-xs-6 mdui-col-md-6">
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4" onclick="tojiaofei()">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-paidui-hui"></use>
+                                </svg>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>缴费记录</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-2 mdui-col-md-2">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4" onclick="toGuahao()">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-yuyuechadang"></use>
+                                </svg>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>挂号记录</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                    </div>
+
+                    <div class="mdui-col-xs-6 mdui-col-md-6">
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4" onclick="toJiuzhen()">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+
+                                    <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-yidijiuyibeianjiluchaxun"></use>
+                                    </svg>
+
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>就诊记录</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-2 mdui-col-md-2">
+
+                        </div>
+                       <!-- <div class="mdui-col-xs-4 mdui-col-md-4">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <a href="View/inspectionList.html">
+                                    <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                        <use xlink:href="#icon-jianchabaogaodan"></use>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>检查报告单</span>
+                            </div>
+                        </div>-->
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                    </div>
+                </div>
+
+
+            <div class="mdui-col-xs-12 mdui-col-md-12">
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 25px;background-color: #F7F7F7;"></div>
+            </div>
+
+            <!-- 住院 -->
+            <div class="mdui-col-xs-12 mdui-col-md-12">
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 10px;"></div>
+                <div class="mdui-col-xs-1 mdui-col-md-1">
+                    <div style="height:15px;width:20%;background-color:#18D7D7;margin-left:50%;"></div>
+                </div>
+                <div class="mdui-col-xs-11 mdui-col-md-11" style="font-size: 15px;">
+                    住院
+                </div>
+                <!-- 住院第一行 -->
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="margin-top: 3%; text-align: center;">
+                    <div class="mdui-col-xs-6 mdui-col-md-6">
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4" onclick="toZhuyuanjilu()">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-jiuzhenjilu"></use>
+                                </svg>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>住院记录</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-2 mdui-col-md-2">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4">
+
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                    </div>
+
+                    <div class="mdui-col-xs-6 mdui-col-md-6">
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4">
+
+                        </div>
+                        <div class="mdui-col-xs-2 mdui-col-md-2">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4">
+
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 20px;"></div>
+            </div>
+
+            <div class="mdui-col-xs-12 mdui-col-md-12">
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 25px;background-color: #F7F7F7;"></div>
+            </div>
+
+
+            <div class="mdui-col-xs-12 mdui-col-md-12">
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 10px;"></div>
+                <div class="mdui-col-xs-1 mdui-col-md-1">
+                    <div style="height:15px;width:20%;background-color:#18D7D7;margin-left:50%;"></div>
+                </div>
+                <div class="mdui-col-xs-11 mdui-col-md-11" style="font-size: 15px;">
+                    其他
+                </div>
+                <!-- 住院第一行 -->
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="margin-top: 3%; text-align: center;">
+                    <div class="mdui-col-xs-6 mdui-col-md-6">
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4" onclick="toJianyan()">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-jianyanbaogaodan"></use>
+                                </svg>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>检验报告</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-2 mdui-col-md-2">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4" onclick="toJiancha()">
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <svg style="font-size: 30px;margin-bottom: 10%;" class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-jianchabaogaodan"></use>
+                                </svg>
+                            </div>
+                            <div class="mdui-col-xs-12 mdui-col-md-12">
+                                <span>检查报告</span>
+                            </div>
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                    </div>
+
+                    <div class="mdui-col-xs-6 mdui-col-md-6">
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4">
+
+                        </div>
+                        <div class="mdui-col-xs-2 mdui-col-md-2">
+
+                        </div>
+                        <div class="mdui-col-xs-4 mdui-col-md-4">
+
+                        </div>
+                        <div class="mdui-col-xs-1 mdui-col-md-1">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mdui-col-xs-12 mdui-col-md-12" style="height: 20px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function toPayDetails() {
+        location.href = "/view/payDetail";
+    }
+    function toAppointmentRegistration() {
+        location.href = "/view/appointmentRegistration";
+    }
+    function toRegisterRecord() {
+        location.href = "/view/registerRecord";
+    }
+    function toInspectionReportList() {
+        location.href = "/view/inspectionReportList";
+    }
+    function toInspectionList() {
+        location.href = "/view/inspectionList";
+    }
+    function toPhysicalExaminationList() {
+        location.href = "/view/physicalExaminationList";
+    }
+    function tojiaofei() {
+        location.href = "/userPayList";
+    }
+    function toGuahao() {
+        location.href = "/view/registerRecord";
+    }
+    function toJiuzhen() {
+        location.href = "/seekMedicalAdviceRecordList";
+    }
+    function toZhuyuanjilu() {
+        location.href = "/hospitalizationRecordList";
+    }
+    function toJianyan() {
+        location.href = "/view/physicalExaminationList";
+    }
+    function toJiancha() {
+        location.href = "/view/physicalExaminationList";
+    }
+
+</script>
+</body>
+</html>

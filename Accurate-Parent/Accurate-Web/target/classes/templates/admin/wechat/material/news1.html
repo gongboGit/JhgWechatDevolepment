@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <script src="/assets/bootstrap/bootstrap-paginator/bootstrap-paginator.min.js"></script>
+    <!--<link rel="stylesheet" href="/assets/layui/css/layui.css"/>-->
+    <style>
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <ul id="page">
+
+        </ul>
+    </div>
+</div>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        $(function() {
+            let currentPage = 1;
+            let totalPages = 2;
+            $("#page").bootstrapPaginator({
+                bootstrapMajorVersion: 3, //对应的bootstrap版本
+                currentPage: currentPage, //当前页数
+                numberOfPages: 10, //每次显示页数
+                totalPages: totalPages, //总页数
+                shouldShowPage: true, //是否显示该按钮
+                useBootstrapTooltip: true,
+                onPageClicked: function(event, originalEvent, type, page) {
+                    console.log(page);
+                }
+            });
+        });
+    </script>
+</section>
+</body>
+</html>

@@ -1,0 +1,107 @@
+#thymelea star
+server:
+  address: 0.0.0.0
+  port: 8090
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types:
+    - image/png
+    - image/jpeg
+    - image/jpg
+    - text/html
+    - application/javascript
+    - text/css
+    - application/octet-stream
+    - application/json
+spring:
+  #  关闭banner
+  main:
+    banner-mode: "off"
+  mvc:
+  #TODO 配置网页小图标
+    favicon:
+      enabled: false
+  #视图引擎配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+#  前台读取配置文件（默认扫描resource下的messages.properties）
+  messages:
+    basename: i18n/company
+#  使用MD5作为版本号,浏览器会缓存静态资源，一般防止浏览器缓存静态资源的做法是在地址后面使用版本号参数，或者在地址后面使用时间戳
+  resources:
+    chain:
+      strategy: 
+        content:
+          enabled: true
+          paths: /**
+#thymelea end
+    #数据库连接配置
+  datasource:
+    url: jdbc:sqlserver://jhg520.gnway.org:20002;DatabaseName=MarketingAccurate
+#    url: jdbc:sqlserver://jhg520.gnway.org:20002;DatabaseName=WeChat
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: jhg2016!@
+  devtools:
+    restart:
+      enabled: true
+  cache:
+    type: ehcache
+    ehcache:
+      config: ehcache.xml
+mybatis:
+  type-aliases-package: com.jhg.marketing.dao.domin
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+logging:
+  level:
+    root: error
+    com.jhg: debug
+#    com.jhg.marketing.dao.mapper: debug
+#  config: classpath:logback.xml
+##分布插件的使用###
+pagehelper:
+  helper-dialect: sqlserver
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# shiro
+shiro:
+  loginUrl: /admin/user/login
+  unauthorizedUrl: /403
+  successUrl: /admin/home/index
+  userNativeSessionManager: true
+  sessionManager:
+    sessionIdUrlRewritingEnabled: false
+  session:
+    timeout: 30
+
+# 用户默认参数
+user:
+  default:
+    password: 123456
+    uploadpath: D:/file
+    visitpath: /file
+  wechat:
+    token: WeiXin
+    appId: wx1e2f879e1064f09f
+    appSecret: 77aa6642b615acc9c3372e2d188245a6
+    # 商户号
+    mchId: 1226679102
+    # 微信商户号密钥
+    paternerKey: guochangbiyiyuan72780120gxhuildj
+    #验证文件名字
+    verify-file: MP_verify_FvDIipgU4kXqg5We.txt
+    #证书路径
+    #certPath: static/WxPay/weChatPay.js
+    #是否沙箱测试环境
+    useSandbox: true
+  domain: http://3f2ggg.natappfree.cc
+  company-name: 重庆巨辉广科技有限公司

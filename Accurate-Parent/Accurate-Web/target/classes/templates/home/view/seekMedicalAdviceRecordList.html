@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>就诊记录</title>
+    <link href="/assets/css/TenG5.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <div class="page__hd">
+        <h1 class="page__title" style="text-align: center">就诊记录</h1>
+    </div>
+    <div class="page__bd">
+        <!--开始行数据-->
+
+
+        <!--结束行数据-->
+    </div>
+    <div class="weui-form-preview__ft">
+        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        listSeekMedicalAdviceRecord();
+    });
+
+    function listSeekMedicalAdviceRecord() {
+        $.ajax({
+            url: '/listSeekMedicalAdviceRecord',
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        for (let i in data) {
+                            str += "<div class=\"weui-form-preview\">\n" +
+                                "                <div class=\"weui-form-preview__hd\">\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">就诊人</label>\n" +
+                                "                        <em class=\"weui-form-preview__value\">" + data[i].XM + "</em>\n" +
+                                "                    </div>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"weui-form-preview__bd\">\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">就诊号</label>\n" +
+                                "                        <span class=\"weui-form-preview__value\">" + data[i].JZH + "</span>\n" +
+                                "                    </div>\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">就诊科室</label>\n" +
+                                "                        <span class=\"weui-form-preview__value\">" + data[i].JZKS + "</span>\n" +
+                                "                    </div>\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">接诊医生</label>\n" +
+                                "                        <span class=\"weui-form-preview__value\">" + data[i].JZYS + "</span>\n" +
+                                "                    </div>\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">就诊日期</label>\n" +
+                                "                        <span class=\"weui-form-preview__value\">" + data[i].JZRQ + "</span>\n" +
+                                "                    </div>\n" +
+                                "                </div>" +
+                                "<div class=\"weui-form-preview__ft\">"
+                                // +"<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"?JiuZhenHao=" + data[i].JZH + "\">病历</a>";
+
+                            if (data[i].SFYP != 1) {
+                                str += "<a class=\"weui-form-preview__btn weui-form-preview__btn_default\" href=\"javascript:\">处方</a>"
+
+                            } else {
+                                str += "<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/prescription?JZH=" + data[i].JZH + "&DJH="+ data[i].DJH +"\">处方</a>"
+                            }
+                            // if (data[i].SFJY != 1) {
+                            //     str += "<a class=\"weui-form-preview__btn weui-form-preview__btn_default\" href=\"javascript:\">检验</a>"
+                            // } else {
+                            //     str += "<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/view/inspectionReport?testNO=" + data[i].JZH + "\">检验</a>"
+                            // }
+                            // if (data[i].SFJC != 1) {
+                            //     str += "<a class=\"weui-form-preview__btn weui-form-preview__btn_default\" href=\"javascript:\">检查</a>"
+                            // } else {
+                            //     str += "<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/view/inspection?inspectNO=" + data[i].JZH + "\">检查</a>"
+                            // }
+                            if (data[i].SFQT != 1) {
+                                str += "<a class=\"weui-form-preview__btn weui-form-preview__btn_default\" href=\"javascript:\">其它</a>"
+                            } else {
+                                str += "<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/otherContent?JZH=" + data[i].JZH + "\">其它</a>"
+                            }
+                            str += "</div>\n" +
+                                "</div>";
+                        }
+                    } else {
+                        str += "<div class=\"weui-form-preview\">\n" +
+                            "            <div class=\"weui-form-preview__bd\">\n" +
+                            "                <div class=\"weui-form-preview__item\">\n" +
+                            "                    <span class=\"weui-form-preview__value\">无就诊记录</span>\n" +
+                            "                </div>\n" +
+                            "            </div>\n" +
+                            "        </div>";
+                    }
+                    $('.page__bd').html(str);
+                }
+            }
+        })
+    }
+</script>
+</html>

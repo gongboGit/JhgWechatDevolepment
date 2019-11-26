@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <script src="/assets/layui/layui.js"></script>
+    <script src="/assets/bootstrap/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>
+    <script src="/assets/bootstrap/bootstrap-fileinput-master/js/fileinput.js"></script>
+    <script src="/assets/bootstrap/bootstrap-fileinput-master/js/locales/zh.js"></script>
+    <link rel="stylesheet" href="/assets/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/assets/bootstrap/bootstrap-fileinput-master/css/fileinput.css"/>
+    <link rel="stylesheet" href="/assets/bootstrap/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css"/>
+    <link rel="stylesheet" href="/assets/layui/css/modules/layer/default/layer.css"/>
+    <style>
+        .hide-div{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        // //初始化fileinput
+        // var control = $('#upload');
+        // //初始化上传控件的样式
+        // control.fileinput({
+        //     language: 'zh', //设置语言
+        //     uploadUrl: '/ajax/postIntroduction', //上传的地址
+        //     allowedFileExtensions: ['jpg'],//接收的文件后缀
+        //     showCaption: false,//是否显示标题
+        //     browseClass: "btn btn-primary", //按钮样式
+        //     browseOnZoneClick: true,
+        //     maxFileSize: 64,//单位为kb，如果为0表示不限制文件大小
+        //     minFileCount: 1,
+        //     enctype: 'multipart/form-data',
+        //     validateInitialCount: true,
+        //     uploadExtraData: {},
+        //     initialPreview: [
+        //         "<img src='/assets/avatars/default.png' class='file-preview-image' alt='Desert' title='Desert'>",
+        //     ],
+        // });
+        $(function () {
+            /* 初始化控件 */
+            let $addOpenComment = $("#add_open_comment");
+            $addOpenComment.bootstrapSwitch({
+                // state : true,
+                onText: "显示",      // 设置ON文本  
+                offText: "隐藏",    // 设置OFF文本  
+                onColor: "success",// 设置ON文本颜色     (info/success/warning/danger/primary)  
+                offColor: "danger",
+                onSwitchChange: function (event, state) {
+                    let addOpenComment = $('#add_open_comment');
+                    if (state) {
+                        $("#comment-radio").show();
+                        addOpenComment.val(1);
+                    } else {
+                        $("#comment-radio").hide();
+                        addOpenComment.val(0);
+                    }
+                }
+            });
+            $addOpenComment.bootstrapSwitch('state', $addOpenComment.attr("checked") == 'checked');
+            //是否显示封面到内容
+            let $showCoverPic = $("#show_cover_pic");
+            $showCoverPic.bootstrapSwitch({
+                onText: "显示",      // 设置ON文本  
+                offText: "隐藏",    // 设置OFF文本  
+                onColor: "success",// 设置ON文本颜色     (info/success/warning/danger/primary)  
+                offColor: "danger",  // 设置OFF文本颜色        (info/success/warning/danger/primary)  
+                // size : "large",    // 设置控件大小,从小到大  (mini/small/normal/large)  
+                // handleWidth:"100",//设置控件宽度
+                // 当开关状态改变时触发  
+                onSwitchChange: function (event, state) {
+                    let showCoverPic = $('#show_cover_pic');
+                    if (state == true) {
+                        showCoverPic.val(1);
+                        /* alert("ON"); */
+                    } else {
+                        showCoverPic.val(0);
+                        /* alert("OFF"); */
+                    }
+                }
+            });
+            $showCoverPic.bootstrapSwitch('state', $showCoverPic.attr("checked") == 'checked');
+
+        });
+            layui.use(['layedit', "upload", "form"], function () {
+            var layedit = layui.layedit;
+            var $ = layui.$;
+            var upload = layui.upload;
+            var form = layui.form;
+            form.render();
+
+            // 设置富文本上传接口
+            layedit.set({
+                uploadImage: {
+                    url: '/ajax/uploadFile',
+                    type: 'post'
+                }
+            });
+            var layeditIndex = layedit.build('content');
+
+            //同步标题
+            $("#add_tltle").keyup(function () {
+                var v = $(this).val();
+                $(".wxmp-doclist .main p").html(v ? v : "请输入标题")
+            });
+            //上传
+            var imageNum = 0;
+            $('#submit-btn').click(function () {
+                var formData = $('#insert-form').serializeObject();
+                formData.content = layedit.getContent(layeditIndex);
+                if(formData.title == "" || formData.title == null) {
+                    layer.alert("请填写标题");
+                    return false;
+                }
+                if(formData.author == "" || formData.author == null) {
+                    layer.alert("请填写作者");
+                    return false;
+                }
+                if(formData.brief == "" || formData.brief == null) {
+                    layer.alert("请填写摘要");
+                    return false;
+                }
+                if (formData.content == "" || formData.content == null) {
+                    layer.alert("请填写内容");
+                    return false;
+                }
+                if (imageNum == 0 && $('#id').val() == null) {
+                    layer.alert("请选择封面图");
+                    return false;
+                }
+                console.info("test");
+                $('#upload-btn').click();
+            });
+            upload.render({
+                elem: '#uploader',
+                url: '/ajax/postIntroduction',
+                size: 64,
+                accept: "images",
+                acceptMime: 'image/jpg',
+                exts: 'JPG|jpg',
+                auto: false,
+                bindAction: '#upload-btn',
+                choose: function (obj) {
+                    // $("#uploader").html("<i class='layui-icon'></i><p>点击重新上传，或将文件拖拽到此处</p>");
+                    // $(".wxmp-doclist .main img").attr("src", "/assets/avatars/default.png");
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                        $("#uploader").html("<img src='" + result + "' style='width: 150px;height: 150px;'/><p>点击重新上传，或将文件拖拽到此处</p>");
+                        $(".wxmp-doclist .main img").attr("src", result);
+                        imageNum = 1;
+                    });
+                },
+                before: function () {
+                    layer.load();
+                },
+                data: {
+                    title: function () {
+                        return $('#add_tltle').val();
+                    },
+                    id: function () {
+                        return $('#id').val();
+                    },
+                    author: function () {
+                        return $('#add_auth').val();
+                    },
+                    digest: function () {
+                        return $('#add_digest').val();
+                    },
+                    show_cover_pic: function () {
+                        return $('#show_cover_pic').val();
+                    },
+                    content: function () {
+                        return layedit.getContent(layeditIndex);
+                    },
+                    content_source_url: function () {
+                        return $('#add_fromurl').val();
+                    },
+                    need_open_comment: function () {
+                        return $('#add_open_comment').val();
+                    },
+                    only_fans_can_comment: function () {
+                        return $(':radio:checked').val();
+                    }
+                },
+                done: function (result) {
+                    layer.closeAll('loading');
+                    if (result) {
+                        layer.msg('编辑成功', {
+                            offset: '15px'
+                            , icon: 1
+                            , time: 1000
+                        },function () {
+                            location.href = '/admin/hospital-info/introduction';
+                        });
+                    }
+                },
+                error: function () {
+                    layer.closeAll('loading');
+                    layer.msg("系统异常");
+                }
+            });
+        });
+
+        //将表单序列化成一个对象
+        $.fn.serializeObject = function() {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [ o[this.name] ];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        }
+    </script>
+</section>
+
+<div layout:fragment="content">
+    <div class="page-header">
+        <h1>
+            [[${viewTitle }]]
+            <!-- <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+
+            </small> -->
+        </h1>
+    </div>
+    <div class="fsh-rightPanel">
+        <div class="wxmp-doclist">
+            <div class="content">
+                <div class="main">
+                    <img th:src="${introduction.thumbUrl != null} ? ${introduction.thumbUrl} : '/assets/avatars/default.png'" style='width: 200px;height: 150px;'>
+                    <p th:text="${introduction.title != null} ? ${introduction.title} : '请输入标题'">请输入标题</p>
+                </div>
+            </div>
+        </div>
+        <form id="insert-form" class="form-horizontal">
+            <input type="hidden" th:value="${introduction.id}" id="id">
+            <div class="form-group">
+                <label for="add_tltle" class="col-sm-2 control-label">标题：<span class="red">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" name="title" id="add_tltle" placeholder="请输入标题"
+                           class="form-control" th:value="${introduction.title}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="add_auth" class="col-sm-2 control-label">作者：<span class="red">*</span></label>
+                <div class="col-sm-10">
+                <input type="text" name="author" id="add_auth" placeholder="请输入作者"
+                       class="form-control" th:value="${introduction.author}">
+                </div>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="upload" class="col-sm-2 control-label">封面图：<span class="red">*</span></label>-->
+                <!--<div class="col-sm-10">-->
+                    <!--<div class="row" style="height: 500px">-->
+                        <!--<input type="file" class="file-loading" id="upload">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <label class="col-sm-2 control-label">封面图：<span class="red">*</span></label>
+                <div class="col-sm-10">
+                    <div class="layui-upload-drag" id="uploader">
+                        <th:block th:if="${introduction.thumbUrl == null}">
+                            <i class="layui-icon"></i>
+                        </th:block>
+                        <th:block th:if="${introduction.thumbUrl != null}">
+                            <img th:src="${introduction.thumbUrl}" style='width: 150px;height: 150px;'/>
+                        </th:block>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <label class="control-label col-sm-2" for="show_cover_pic">是否将封面显示在内容：</label>
+                    <div class="controls col-xs-2">
+                        <div class="switch">
+                            <input id="show_cover_pic" type="checkbox" th:checked="${introduction.show_cover_pic == 1}" th:value="${introduction.show_cover_pic != null} ? ${introduction.show_cover_pic} : 0" name="show_cover_pic"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="add_digest" class="col-sm-2 control-label">摘要：<span class="red">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" name="brief" id="add_digest" placeholder="请输入摘要"
+                       class="form-control" th:value="${introduction.digest}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="add_fromurl" class="col-sm-2 control-label">原文链接：</label>
+                <div class="col-sm-10">
+                    <input type="text" name="fromurl" id="add_fromurl" placeholder="请输入原文链接"
+                       class="form-control" th:value="${introduction.content_source_url}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline" id="add_comment_type" style="margin-bottom:0;">
+                    <label class="control-label col-sm-2" for="add_open_comment">留言：</label>
+                    <div class="controls col-xs-2">
+                        <div class="switch">
+                            <input id="add_open_comment" type="checkbox" th:checked="${introduction.need_open_comment == 1}" th:value="${introduction.need_open_comment != null} ? ${introduction.need_open_comment} : 0" name="open_comment"/>
+                        </div>
+                    </div>
+                    <div id="comment-radio" th:class="${introduction.need_open_comment != 1} ? 'hide-div' : ''" >
+                        <div class="radio col-xs-2">
+                            <label>
+                                <input type="radio" name="fans_can_comment" value="0" title="所有人可留言" th:checked="${introduction.only_fans_can_comment != 1}" >
+                                所有人可留言
+                            </label>
+                        </div>
+                        <div class="radio col-xs-2">
+                            <label>
+                                <input type="radio" name="fans_can_comment" value="1" title="仅粉丝可留言" th:checked="${introduction.only_fans_can_comment == 1}" >
+                                仅粉丝可留言
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="content" class="col-sm-2 control-label">内容：<span class="red">*</span></label>
+                <div class="col-sm-10">
+                    <textarea name="content" id="content" class="form-control" cols="30" rows="10" th:text="${introduction.content}"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-default" id="submit-btn">立即提交</button>
+                    <button type="button" class="btn btn-default" id="upload-btn" style="display: none">上传图片</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>住院记录</title>
+    <link href="/assets/css/TenG5.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <div class="page__hd">
+        <h1 class="page__title" style="text-align: center">住院记录</h1>
+    </div>
+    <div class="page__bd">
+        <!--开始行数据-->
+
+
+        <!--结束行数据-->
+    </div>
+    <div class="weui-form-preview__ft">
+        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        listHospitalizationRecord();
+    });
+
+    function listHospitalizationRecord() {
+        $.ajax({
+            url: '/listHospitalizationRecord',
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        for (let i in data) {
+                            str += "<div class=\"weui-form-preview\">\n" +
+                                "                <div class=\"weui-form-preview__hd\">\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">姓名</label>\n" +
+                                "                        <em class=\"weui-form-preview__value\">" + data[i].XM + "(" + (("在院" == data[i].ZT) ? data[i].CH + "床" : "出院") + ")</em>\n" +
+                                "                    </div>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"weui-form-preview__bd\">\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">住院号</label>\n" +
+                                "                        <span class=\"weui-form-preview__value\">" + data[i].ZYH + "</span>\n" +
+                                "                    </div>\n" +
+                                "                    <div class=\"weui-form-preview__item\">\n" +
+                                "                        <label class=\"weui-form-preview__label\">入院科室</label>\n" +
+                                "                        <span class=\"weui-form-preview__value\">" + data[i].RYKS + "</span>\n" +
+                                "                    </div>";
+
+                            if (data[i].RYKS != data[i].DQKS) {
+                                str += "<div class=\"weui-form-preview__item\">\n" +
+                                    "                                <label class=\"weui-form-preview__label\">" + (("在院" == data[i].ZT) ? "当前科室" : "出院科室") + "</label>\n" +
+                                    "                                <span class=\"weui-form-preview__value\">" + data[i].DQKS + "</span>\n" +
+                                    "                                </div>"
+                            }
+                            str += "<div class=\"weui-form-preview__item\">\n" +
+                                "            <label class=\"weui-form-preview__label\">主管医生</label>\n" +
+                                "            <span class=\"weui-form-preview__value\">" + data[i].ZYYS + "</span>\n" +
+                                "        </div>\n" +
+                                "        <div class=\"weui-form-preview__item\">\n" +
+                                "            <label class=\"weui-form-preview__label\">入院日期</label>\n" +
+                                "            <span class=\"weui-form-preview__value\">" + data[i].RYRQ + "</span>\n" +
+                                "        </div>";
+                            if ("在院" == data[i].ZT) {
+                                str += "<div class=\"weui-form-preview__item\">\n" +
+                                    "                                <label class=\"weui-form-preview__label\">初步诊断</label>\n" +
+                                    "                                <span class=\"weui-form-preview__value\">" + data[i].RYZD + "</span>\n" +
+                                    "                                </div>"
+                            } else {
+                                str += "<div class=\"weui-form-preview__item\">\n" +
+                                    "                                <label class=\"weui-form-preview__label\">出院日期</label>\n" +
+                                    "                                <span class=\"weui-form-preview__value\">" + data[i].CYRQ + "</span>\n" +
+                                    "                                </div>\n" +
+                                    "                                <div class=\"weui-form-preview__item\">\n" +
+                                    "                                <label class=\"weui-form-preview__label\">出院诊断</label>\n" +
+                                    "                                <span class=\"weui-form-preview__value\">" + data[i].CYZD + "</span>\n" +
+                                    "                                </div>"
+                            }
+                            str += "</div>\n" +
+                                "    <div class=\"weui-form-preview__ft\">"
+                            if ("在院" == data[i].ZT) {
+                                str +=
+                                    // "<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"?ZhuYuanHao=@item.ZYH\">入院卡</a>*@\n" +
+                                    "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/prePayMoney?ZYH="+ data[i].ZYH +"\">预交款</a>\n" +
+                                    // "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/view/inspectionReport?ZYH="+data[i].ZYH+"\">检验</a>\n" +
+                                    // "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/view/inspection?ZYH="+data[i].ZYH+"\">检查</a>\n" +
+                                    "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/hospitalizationOneDayDataList?ZYH="+ data[i].ZYH +"\">日清单</a>"
+                            } else {
+                                str +=
+                                    // "<a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"?ZhuYuanHao=@item.ZYH\">出院卡</a>\n" +
+                                    "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/hospitalizationDataList?ZYH="+ data[i].ZYH +"\">结算单</a>\n" +
+                                    // "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"@Url.Action(\"\n" +
+                                    // "                                ShowJianYanBaoGao\", \"ZhuYuan\")?ZhuYuanHao=@item.ZYH\">检验</a>\n" +
+                                    // "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"@Url.Action(\"\n" +
+                                    // "                                ShowJianChaBaoGao\", \"ZhuYuan\")?ZhuYuanHao=@item.ZYH\">检查</a>\n" +
+                                    "                            <a  class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/hospitalizationOneDayDataList?ZYH=" + data[i].ZYH +"\">日清单</a>";
+                            }
+                            str += "</div>\n" +
+                                "</div>";
+                        }
+                    } else {
+                        str += "<div class=\"weui-form-preview\">\n" +
+                            "            <div class=\"weui-form-preview__bd\">\n" +
+                            "                <div class=\"weui-form-preview__item\">\n" +
+                            "                    <span class=\"weui-form-preview__value\">无相关记录</span>\n" +
+                            "                </div>\n" +
+                            "            </div>\n" +
+                            "        </div>";
+                    }
+                    $('.page__bd').html(str);
+                }
+            }
+        })
+    }
+</script>
+</html>

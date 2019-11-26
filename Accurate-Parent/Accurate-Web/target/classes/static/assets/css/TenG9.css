@@ -1,0 +1,9 @@
+body{
+    touch-action: none;
+}
+.weui-label{
+	width: 100% !important;
+}
+.back_color{
+	background-color: rgba(0,0,0,0.02) !important;
+}

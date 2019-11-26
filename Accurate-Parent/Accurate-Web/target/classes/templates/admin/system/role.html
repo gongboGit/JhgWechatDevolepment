@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        //CRUD操作
+        $(function() {
+            $('#view_edit,#view_delete').click(function() {
+                let id = $(this).attr('id');
+                let lastId = tableSelector.selectedLast();
+                let ids = tableSelector.getSelectList4Ids();
+
+                if (!lastId) {
+                    MsgBox.alert('请选择要操作的项！');
+                    return;
+                }
+
+                if (id === 'view_edit') {
+                    location.href = ('/admin/system/editrole?id=' + lastId)
+                }
+                if (id === 'view_delete') {
+                    MsgBox.confirm('您确定要删除选中的项', function() {
+                        $.post('/admin/ajax/roledel', {
+                            ids : ids.join(',')
+                        }, function(data) {
+                            MsgBox.alert(data.msg);
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        })
+                    });
+                }
+            })
+        })
+    </script>
+</section>
+<section layout:fragment="navTools">
+    <div class="row">
+        <div class="col-xs-9">
+            <a class="btn btn-info" href="/admin/system/editrole">
+                <i class="ace-icon fa bigger-110 fa-plus"></i>
+                添加
+            </a>
+            <a class="btn" id="view_edit" href="javascript:void(0)">
+                <i class="ace-icon fa bigger-110 fa-edit"></i>
+                修改
+            </a>
+            <a class="btn btn-danger" id="view_delete" href="javascript:void(0)">
+                <i class="ace-icon fa bigger-110 fa-trash-o"></i>
+                删除
+            </a>
+        </div>
+    </div>
+    <div class="hr hr-18 dotted hr-double"></div>
+</section>
+
+<div layout:fragment="content">
+    <section th:replace="layout/table::table(${table})"></section>
+</div>
+</body>
+</html>

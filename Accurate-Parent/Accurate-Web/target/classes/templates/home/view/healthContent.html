@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>健康教育</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="/assets/css/TenG5.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <style type="text/css">
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        320
+        px
+
+        )
+        and
+
+        (
+        max-width:
+
+        360
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 62.5%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        360
+        px
+
+        )
+        and
+
+        (
+        max-width:
+
+        374
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 70.3%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        375
+        px
+
+        )
+        and
+
+        (
+        max-width:
+
+        383
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 73.24%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        384
+        px
+
+        )
+        and
+
+        (
+        max-width:
+
+        399
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 75.0%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        400
+        px
+
+        )
+        and
+
+        (
+        max-width:
+
+        413
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 78.125%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        414
+        px
+
+        )
+        and
+
+        (
+        max-width:
+
+        431
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 80.86%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        @
+        (
+        "@"
+        )
+        media screen and
+
+        (
+        min-width:
+
+        432px
+
+        )
+        and
+
+        (
+        max-width:
+
+        479
+        px
+
+        )
+        and
+
+        (
+        orientation:portrait
+
+        )
+        {
+        html {
+            font-size: 84.375%;
+            font-family: "微软雅黑";
+        }
+
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+        }
+
+        .top {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 1.6rem;
+            background: #5FB878;
+            color: #fff;
+        }
+
+        .title {
+            width: 98%;
+            font-size: 1.3rem;
+            margin-left: 2%;
+            margin-top: 10px;
+        }
+
+        .btTitle {
+            font-size: 1.2rem;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .wzContent {
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 1rem;
+            font-family: "宋体";
+        }
+    </style>
+</head>
+<body style="overflow-y:scroll;">
+<div class="top">健康教育</div>
+<div class="content"></div>
+<div class="weui-form-preview__ft">
+    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+</div>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        getContent();
+    });
+
+    function getContent() {
+        $.ajax({
+            type: "post",
+            url: 'getHealthContent',//数据接口
+            dataType: 'json',
+            data: {
+                "healthInfoId": [[${param.id}]][0]
+            },
+            success: function (obj) {
+                let data = obj.data;
+                showContent(data);
+            },
+            error: function () {
+                alert("请求错误");
+            }
+        });
+        // return jsonArr;
+    }
+
+    function showContent(jsonArr) {
+        $.each(jsonArr, function (i, item) {
+            $(".content").append("<div class='btTitle'>" + jsonArr[i].标题 + "</div><div class='wzContent'>" + jsonArr[i].内容 + "</div>");
+        })
+    }
+</script>
+</body>
+</html>
+
+
+</body>
+</html>

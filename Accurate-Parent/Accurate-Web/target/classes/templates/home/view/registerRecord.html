@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+	<title>挂号记录</title>
+	<link href="/assets/css/TenG8.css" rel="stylesheet" />
+	<link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet" />
+	<link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet" />
+	<link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet" />
+	<link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet" />
+	<link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+	<script src="/assets/jquery-1.9.1.min.js"></script>
+	<script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+	<script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+	<script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+	<script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+	<script src="/assets/bootstrap/js/bootstrap.js"></script>
+	<script src="/assets/bootstrap/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script src="/assets/vue.js"></script>
+	<script src="/assets/axios.min.js"></script>
+	<script src="/assets/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="mdui-tab" mdui-tab>
+	<a href="#example6-tab1" class="mdui-ripple">
+		<label>已就诊</label>
+	</a>
+	<a href="#example6-tab2" class="mdui-ripple">
+		<label>未就诊</label>
+	</a>
+</div>
+<div style="height:30px;" class="col-xs-12">
+
+</div>
+<div id="example6-tab1">
+	<div v-for="i in objlist" class="col-xs-12">
+		<div class="panel  panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title">挂号科室：{{ i.JZKS}}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="col-xs-5">时间：{{ i.JZRQ}}</div>
+				<div class="col-xs-3">金额：{{ i.ZJE}}￥</div>
+				<div class="col-xs-4">医生：{{ i.JZYS}}</div>
+
+			</div>
+			<div class="panel-body">
+				<div class="col-xs-7" style="color: #ff6633;">就诊人：{{ i.XM}}</div>
+				<!--<div class="col-xs-5" style="color: #ff6633;">诊断：{{ i.diagnosis}}</div>-->
+			</div>
+		</div>
+		<div class="col-xs-12">
+
+		</div>
+
+	</div>
+</div>
+<div id="example6-tab2">
+	<div v-for="i in objlist" class="col-xs-12">
+		<div class="panel  panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title">挂号科室：{{ i.departmentName}}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="col-xs-5">时间：{{ i.time}}</div>
+				<div class="col-xs-3">金额：{{ i.money}}￥</div>
+				<div class="col-xs-4" style="color: #ff6633;">就诊人：{{ i.name}}</div>
+			</div>
+		</div>
+
+		<div class="col-xs-12">
+
+		</div>
+	</div>
+</div>
+<a href="javascript:void(0)" onclick="(history.back(-1))" class="weui-btn weui-btn_plain-primary">返回</a>
+<div class="weui-footer">
+	<p class="weui-footer__links">
+		<!--<a href="javascript:void(0);" class="weui-footer__link">TenG叁火</a>-->
+	</p>
+	<p class="weui-footer__text">Copyright © 2013-2025 重庆巨辉广科技有限公司</p>
+</div>
+</body>
+<script>
+    //已就诊的vue
+    var registeredJL = new Vue({
+        el: "#example6-tab1",
+        data: {
+            objlist: '',
+        },
+        created() {
+            var that = this;
+            axios.get("/listRegisterRecord", {
+                /* 传参 */
+            })
+                .then(function (result) {
+                    let data = result.data.data;
+                    let dataList = [];
+                    for (let i in data) {
+                        dataList.push(JSON.parse(data[i]));
+                    }
+                    console.log(dataList);
+                    that.objlist = dataList;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    });
+    //未就诊的vue
+    var registeredJL=new Vue({
+        el:"#example6-tab2",
+        data:{
+            objlist:'',
+        },
+        created(){
+            var that=this;
+            axios.get("/assets/json/listGHJL.json",{
+                /* 传参 */
+            })
+                .then(function(result){
+                    // that.objlist=result.data.objListD;
+                })
+                .catch(function(error){
+                    console.log(error);
+                })
+        }
+    })
+</script>
+</html>

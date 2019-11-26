@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>预约挂号</title>
+    <link href="/assets/css/TenG6.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/assets/vue.js"></script>
+    <script src="/WxPay/weChatPay.js"></script>
+    <script src="/jweixin-1.4.0.js"></script>
+</head>
+
+<body>
+<div class="weui-tab">
+    <!--<div class="weui-navbar">-->
+    <!--<a class="weui-navbar__item weui-bar__item&#45;&#45;on" href="#tab1">-->
+    <!--按时间挂号-->
+    <!--</a>-->
+    <!--<a class="weui-navbar__item" href="#tab2">-->
+    <!--按医生挂号-->
+    <!--</a>-->
+    <!--</div>-->
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12" id="date">
+[[${param.registerType}]][0]
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="weui-panel weui-panel_access">
+                            <div class="weui-panel__hd">医生名单</div>
+                            <div class="weui-panel__bd" id="doctorInfo">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div id="tab2" class="weui-tab__bd-item">-->
+        <!--<div id="app">-->
+        <!--{{ message }}-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>
+</body>
+
+<script th:inline="javascript">
+
+    // var app = new Vue({
+    //     el: '#app',
+    //     data: {
+    //         message: 'Hello Vue!'
+    //     }
+    // })
+    // var aaaa = new Vue({
+    //     el: '#aaaa',
+    //     data: {
+    //         isdivZeroOneX: 0
+    //     },
+    //     methods: {
+    //         say: function (obj) {
+    //             this.isdivZeroOneX = obj
+    //         }
+    //     }
+    // });
+    $(function () {
+        getDoctorInfo();
+       // setDate();
+     //   $('.divZeroOne').first().click();
+    });
+    let departmentId = [[${param.departmentId}]][0];
+    let departmentName = [[${param.departmentName}]][0];
+  /*  function setDate(){
+        let str = '';
+        for (let i = 0; i < 6; i++) {
+            str += '<div class="divZero ">\n' +
+                '                            <div class="divZeroOne " onclick="getDoctorInfo(this,\'' + getNowDate(i) + '\')">' + getNowWeek(i) + '<br>' + getNowDate(i) + '</div>\n' +
+                '                        </div>\n';
+        }
+
+        $('#date').html(str);
+    }*/
+
+    function getDoctorInfo() {
+     /*   $('.divZeroOne').removeClass().addClass('divZeroOne');
+        $(obj).addClass('divZeroOneX');
+        $.showLoading();
+        let date = new Date().getFullYear()+"-"+dateStr;*/
+        $.ajax({
+            url: '/getDoctorInfo',
+            data: {"registerType": [[${param.registerType}]][0],"departmentId": departmentId, "date": departmentName},
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        for (let i in data) {
+                            if (data[i].regCount > 0) {
+
+
+                           // console.info(((data[i].list1)[0].item1)[0].itemCode)
+                            // let list1 = data[i].list1;
+                            // for (let j in list1) {
+                            //     let item1 = list1[j].item1;
+                            //     for (let k in item1) {
+                            //         console.info(item1[k].itemCode)
+                            //     }
+                            // }
+                            str += '<div class="weui-media-box weui-media-box_appmsg">\n' +
+                                '                                    <div class="weui-media-box__hd">\n' +
+                                '                                        <img class="weui-media-box__thumb" src="/assets/images/doctor.jpg">\n' +
+                                '                                    </div>\n' +
+                                '                                    <div class="weui-media-box__bd">\n' +
+                                '                                        <h4 class="weui-media-box__title">'+ data[i].MarkDesc +'\n' +
+                                '                                            <button type="button" style="float: right; font-size: 0.4rem;"\n' +
+                                '                                                    onclick="register('+data[i].Price+',\''+ departmentName+'\',\''+ [[${param.registerType}]][0] +'\',\''+ data[i].AsRowid +'\',\''+ data[i].SessionType +'\')" class="btn btn-success">预约\n' +
+                                '                                            </button>\n' +
+                                '                                            <p class="weui-media-box__desc" style="color: #ff6633;">'+ data[i].HBTime +'</p>\n' +
+                                '                                        </h4>\n' +
+                                '                                        <p class="weui-media-box__desc">'+ data[i].SessionType +'</p>\n' +
+                                '                                        <label style="color: #3cc51f;">价格：'+ data[i].Price +'</label>\n' +
+                                '                                    </div>\n' +
+                                '                                </div>';
+                            }
+                        }
+                    }
+                    if (!str) {
+                        str += '<div style="text-align: center">暂无挂号信息</div>';
+                    }
+                    $('#doctorInfo').html(str);
+                    $.hideLoading();
+                } else {
+
+                }
+            },
+            error: function () {
+
+            }
+        })
+    }
+
+    function getNowDate(location) {
+        let date = new Date();
+        if (!location) {
+            location = 0;
+        }
+        let nextDate = new Date(date.getTime() + 24 * 60 * 60 * 1000 * location);
+        let mon = nextDate.getMonth() + 1;
+        let da = nextDate.getDate();
+        if (mon < 10) {
+            mon = '0' + mon;
+        }
+        if (da < 10) {
+            da = '0' + da;
+        }
+        return mon + '-' + da;
+    }
+
+    function getNowWeek(location) {
+        let a = ["日", "一", "二", "三", "四", "五", "六"];
+        if (!location) {
+            location = 0;
+        }
+        let week = new Date().getDay() + location;
+        if (week >= 7) {
+            week = week - 7;
+        }
+        return '周' + a[week];
+    }
+
+    function register(price,examId,date,asRowid,sessionType) {
+    // console.info(price)
+    // console.info(examId)
+    // console.info(date)
+    // console.info(asRowid)
+        location.href = '/view/appointmentRegistrationTips?price='+ price
+            +'&examId='+ examId +'&date='+ date +'&asRowid='+ asRowid+'&departmentName='+ departmentName +'&sessionType='+ sessionType+'&deptID='+ departmentId ;
+    }
+</script>
+</html>

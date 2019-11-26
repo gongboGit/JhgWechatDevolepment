@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout" 
+	xmlns:th="http://www.thymeleaf.org" 
+	layout:decorate="layout/admin-layout">
+<head>
+<meta charset="UTF-8">
+<title>错误</title>
+</head>
+<body>
+<div layout:fragment="content">
+<h1>错误</h1>
+<hr/>
+<h2>代码：[[${error.code}]]，消息：[[${error.msg}]]</h2>
+</div>
+</body>
+</html>

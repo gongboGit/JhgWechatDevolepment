@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+		<title>专家详细信息</title>
+		<link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+		<link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+		<link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+		<link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+		<link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+
+		<script src="/assets/jquery-1.9.1.min.js"></script>
+		<script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+		<script src="/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="/assets/bootstrap/bootstrap-table/bootstrap-table.min.js"></script>
+		<script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+		<script src="/assets/vue.js"></script>
+		<script src="/assets/axios.min.js"></script>
+	</head>
+
+	<body ontouchstart>
+		<div class="mdui-card">
+
+			<!-- 卡片头部，包含头像、标题、副标题 -->
+			<div class="mdui-card-header">
+				<img class="mdui-card-header-avatar" id="img"/>
+				<div class="mdui-card-header-title" id="name">索隆</div>
+				<!--<div class="mdui-card-header-subtitle">绿藻头</div>-->
+			</div>
+
+			<!-- 卡片的媒体内容，可以包含图片、视频等媒体内容，以及标题、副标题 -->
+			<!--<div class="mdui-card-media">-->
+				<!--<img src="/assets/images/五等分花嫁.jpg" />-->
+
+				<!--&lt;!&ndash; 卡片中可以包含一个或多个菜单按钮 &ndash;&gt;-->
+				<!--<div class="mdui-card-menu">-->
+					<!--<button class="mdui-btn mdui-btn-icon mdui-text-color-white"><i class="mdui-icon material-icons">share</i></button>-->
+				<!--</div>-->
+			<!--</div>-->
+
+			<!--&lt;!&ndash; 卡片的标题和副标题 &ndash;&gt;-->
+			<!--<div class="mdui-card-primary">-->
+				<!--<div class="mdui-card-primary-title">索隆</div>-->
+				<!--<div class="mdui-card-primary-subtitle">绿藻头</div>-->
+			<!--</div>-->
+
+			<!-- 卡片的内容 -->
+			<div class="mdui-card-content" id="description"></div>
+
+			<!-- 卡片的按钮 -->
+			<!--<div class="mdui-card-actions">-->
+				<!--<button class="mdui-btn mdui-ripple">预约</button>-->
+				<!--<button class="mdui-btn mdui-ripple">关注</button>-->
+				<!--<button class="mdui-btn mdui-btn-icon mdui-float-right"><i class="mdui-icon material-icons">expand_more</i></button>-->
+			<!--</div>-->
+
+		</div>
+		<div class="col-xs-12" style="height: 5px;">
+		
+		</div>
+		<a href="javascript:void(0)" onclick="(history.back(-1))" class="weui-btn weui-btn_plain-primary">返回</a>
+		<div class="weui-footer">
+			<p class="weui-footer__links">
+				<!--<a href="javascript:void(0);" class="weui-footer__link">TenG叁火</a>-->
+			</p>
+			<p class="weui-footer__text">Copyright © 2013-2025 重庆巨辉广科技有限公司</p>
+		</div>
+	<script th:inline="javascript">
+        let id = [[${param.expertInfoId}]][0];
+        $.ajax({
+			url: '/getExpertInfo',
+			data: {'id': id},
+			type: 'post',
+			dataType: 'json',
+			success: function (result) {
+				if (result.code == 1) {
+                    let data = result.data;
+                    var img = new Image();
+                    img.src = data.headImgUrl;
+                    $(img).bind("load", function () {
+                        $("#img").attr("src", this.src);
+                    });
+                    $('#name').html(data.name);
+                    $('#description').html(data.description)
+				}
+            }
+		})
+	</script>
+	</body>
+</html>

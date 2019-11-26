@@ -1,0 +1,136 @@
+body{
+	
+}
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.body{
+	background-color: #F7F7F7;
+}
+.bodyTwo{
+	background-color: #F7F7F7;
+	z-index: 999;
+}
+html{
+	font-size: 62.5%;
+}
+.tdBotton{
+	border-bottom: #000000 1px solid; 
+}
+.tdLeft{
+	border-left: #000000 1px solid; 
+}
+.tdRight{
+	border-right: #000000 1px solid; 
+}
+.tdTop{
+	border-top: #000000 1px solid; 
+}
+.divOne{
+	margin-top: 5%;
+	height: 120px;
+	margin-left: 5%;
+	margin-bottom: 5%;
+	
+}
+.divOneOne{
+	width: 94%;
+	height: 100%;
+	border: #D5D5D5 2px dotted;
+	text-align: center;
+	border-radius:10px;
+	background-color: #F7F7F7;
+}
+.divOneOneOne{
+	
+}
+.divOneOneOne span{
+	color: rgba(0,0,0,.54) !important;
+	font-size: 1.5rem;
+}
+.divTwo{
+	width: 100%;
+	background-color: #FFFFFF;
+	height: 40px;
+	line-height: 40px;
+	text-align: center ;
+}
+.divTwo img{
+	width: 9%;
+	margin-bottom: -10px;
+}
+.divTwo span{
+	font-family: "微软雅黑";
+	font-size: 1.9rem;
+	
+}
+.divShree{
+	background-color: #FFFFFF;
+	height: 90px;
+	text-align: center;
+	margin-top: 3%;
+	margin-bottom: 3%;
+}
+.divShree table{
+	border-collapse:collapse;
+}
+.divShree table td{
+	border: #D5D5D5 1px solid;
+}
+.divShreeImgOne{
+	margin-left: 50px;
+	float: left;
+	width: 20%;
+}
+.divShreeImgTwo{
+	width: 30%;
+}
+.spanOne{
+	font-size: 1.4rem;
+	font-weight: 400;
+}
+.spanTwo{
+	font-size: 1.2rem;
+	color: #808080;
+}
+.spanThree{
+	font-size: 1.4rem;
+	color: rgb(155, 155, 155);
+}
+.divFour{
+	width: 100%;
+	background-color: #F7F7F7;
+	height: 30px;
+	text-align: center;
+}
+.divFive{
+	width: 100%;
+	background-color: #FFFFFF;
+	height: 350px;
+	text-align: center;
+}
+.divFiveOne{
+	width: 100%;
+	height: 40%;
+}
+.divFive img{
+	width: 25%;
+}
+.divFive span{
+	font-family: "微软雅黑";
+	font-size: 1rem;
+	color:#808080 ;
+}
+
+.mdui-col, [class*=mdui-col-lg-], [class*=mdui-col-md-], [class*=mdui-col-sm-], [class*=mdui-col-xl-], [class*=mdui-col-xs-] {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.mdui-bottom-nav a.mdui-bottom-nav-active{
+	color: #3399cc !important;
+}
+

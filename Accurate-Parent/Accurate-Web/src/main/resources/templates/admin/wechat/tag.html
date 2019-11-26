@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div id="updateTagName" class="form-horizontal">
+        <div class="form-group">
+            <label for="tagName" class="col-sm-3 control-label">标签名：</label>
+            <div class="col-sm-7">
+                <input type="text" id="tagName" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button onclick="updateTagName()" class="btn btn-primary">修改</button>
+            </div>
+        </div>
+        <input type="hidden" id="tagId">
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <form>
+                        <!--<input type="hidden" name="ID" value="@(Guid.NewGuid().ToString())"/>-->
+                        <!--<input type="hidden" name="Catag" value="@(catag)"/>-->
+                        <label class="col-sm-3 control-label no-padding-right"> 标签名字:<input type="text"
+                                                                                            required="required"
+                                                                                            id="newTagName"
+                                                                                            name="newTagName"
+                                                                                            placeholder="标签名字"/>
+                        </label>
+                        <!--<label class="col-sm-3 control-label"> 描述:<input type="text" id="Desc" name="Desc" placeholder="描述" /> </label>-->
+                        <button class="btn btn-info" onclick="insertTag()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            添加
+                        </button>
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            清空
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="hr hr-18 dotted hr-double"></div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>标签ID</th>
+                            <th>名称</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="tbody">
+
+                        </tbody>
+                    </table>
+                </div><!-- /.span -->
+            </div><!-- /.row -->
+        </div><!-- /.col -->
+    </div>
+</div>
+<section layout:fragment="script">
+    <script>
+        $(function () {
+            initTable();
+            $('#updateTagName').hide()
+        });
+
+        function initTable() {
+            $.ajax({
+                url: "/admin/tag/listTag",
+                type: "get",
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 1) {
+                        let str;
+                        let data = result.data;
+                        if (data == null || data.length == 0) {
+                            str += "<tr>\n" +
+                                "                                <td colspan=\"3\" style='text-align: center'>没有找到匹配的记录</td>\n" +
+                                "                            </tr>";
+                        } else {
+                            for (let i in data) {
+                                str += "<tr>\n" +
+                                    "                            <td>" + data[i].id + "</td>\n" +
+                                    "                            <td>" + data[i].name + "</td>\n" +
+                                    "                            <th>\n" +
+                                    "                                <button onclick=\"del(" + data[i].id + ")\"  class=\"btn btn-xs btn-danger\">\n" +
+                                    "                                    <i class=\"ace-icon fa fa-trash-o bigger-120\"></i>\n" +
+                                    "                                </button>\n" +
+                                    "                                <button onclick=\"updateTagNameEvent(" + data[i].id + ")\"  class=\"btn btn-xs btn-danger\">\n修改" +
+                                    "                                </button>\n" +
+                                    "                            </th>\n" +
+                                    "                        </tr>";
+                            }
+                        }
+                        $('#tbody').html(str);
+                    }
+                }
+            });
+        }
+
+        function insertTag() {
+            $.ajax({
+                url: "/admin/tag/createTag",
+                type: "post",
+                data: {"tagName": $("#newTagName").val()},
+                success: function (result) {
+                    if (result.code == 1) {
+                        initTable();
+                    }
+                }
+            })
+        }
+
+        function del(tagId) {
+            MsgBox.confirm('您确定要删除此项吗？', function () {
+                $.post('/admin/tag/deleteTag', {"id": tagId}, function (result) {
+                    if (result.code == 1) {
+                        initTable();
+                    }
+                })
+            })
+        }
+
+        function updateTagNameEvent(tagId) {
+            $('#tagId').val(tagId);
+            layer.open({
+                type: 1,
+                area: ['400px', '300px'],
+                title: '修改标签名称',
+                content: $('#updateTagName')
+            })
+        }
+
+        function updateTagName() {
+            $.ajax({
+                url: '/admin/tag/updateTagName',
+                type: 'post',
+                data: {"id": $('#tagId').val(), "name": $('#tagName').val()},
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg, function () {
+                        initTable();
+                    })
+                }
+            })
+        }
+    </script>
+</section>
+</body>
+</html>

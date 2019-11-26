@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="toolbar" class="btn-group">
+        <button id="btn_add" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button id="btn_edit" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        $(function () {
+            initTable();
+        });
+        function initTable() {
+            $('#table').bootstrapTable('destroy').bootstrapTable({
+                columns: [
+                    [{
+                        checkbox: true
+                    }, {
+                        field: 'name',
+                        title: '姓名',
+                        align: 'center'
+                    }, {
+                        field: 'headImgUrl',
+                        title: '头像',
+                        align: 'center',
+                        formatter: function (value, row, index) {
+                            return "<img src=\"" + value + "\" height='40px' width='40px'>";
+                        }
+                    }, {
+                        field: 'description',
+                        title: '描述',
+                        align: 'center',
+                    }, {
+                        field: 'showIndex',
+                        title: '是否显示在推荐页',
+                        align: 'center',
+                        formatter: function (value) {
+                            return value ? "是" :"否";
+                        }
+                    }/*, {
+                        field: 'operate',
+                        title: '操作',
+                        formatter: operateFormatter //自定义方法，添加操作按钮
+                    },*/
+                    ]
+                ],
+                url: "/admin/expertInformation/listExpertInformation", //请求数据的地址URL
+                responseHandler: function (result) {
+                    if (result.code == 1) {
+                        return result.data;
+                    } else {
+                        //TODO 请求数据失败
+                    }
+                },
+                method: 'post', //请求方式(*)
+                striped: true, //是否显示行间隔色
+                cache: true, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性(*)
+                pagination: true, //是否显示分页(*)
+                sortable: true, //是否启用排序
+                theadClasses: 'dark',
+                sortOrder: "desc", //排序方式
+                sidePagination: "client", //分页方式：client客户端分页，server服务端分页(*)
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数(*)
+                pageList: [10, 50, 100], //可供选择的每页的行数(*)
+                showColumns: false, //是否显示所有的列
+                /*  showRefresh: true,*/ //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                /* height: 600,*/
+                detailView: false, //是否显示父子表    *关键位置*
+                queryParamsType: "limit",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                checkboxHeader: true,
+                /* search: true,*/
+                // queryParams: queryParams,
+                showHeader: true,
+                maintainSelected: true,
+                searchFormatter: true,
+                // singleSelect: true,
+                onDblClickRow: function (row) {
+                    console.info('双击行！');
+                }
+                /*showColumns: true,*/ // 开启自定义列显示功能
+                //注册加载子表的事件。你可以理解为点击父表中+号时触发的事件
+
+
+            });
+        }
+
+        //查询参数
+        function queryParams(params) {
+            return {"title": $('#title').val()};
+        }
+
+        // 格式化按钮
+        function operateFormatter(value, row, index) {
+            return [
+                '<button type="button" class="btn-small btn-primary" onclick="sendMsg('+ row.id +','+ row.diseasesTypeId +')" style="margin-right:15px;">发送消息</button>',
+                '<button type="button" class="btn-small btn-primary" onclick="deleteMessage('+ row.id +')" style="margin-right:15px;">删除消息</button>',
+            ].join('');
+        }
+
+        // 按钮绑定
+        $('#btn_add,#btn_edit,#btn_delete').click(function() {
+            let id = $(this).attr('id');
+            if ( id === 'btn_add') {
+                //新增
+                location.href = '/admin/wechat/expertInformation-edit';
+                return;
+            }
+            var checkBox = $('#table').bootstrapTable('getSelections');
+            if (checkBox.length === 0) {
+                MsgBox.alert('请选择要操作的项！');
+                return;
+            }
+
+            if (id === 'btn_edit') {
+                location.href = ('/admin/wechat/expertInformation-edit?id=' + checkBox[0].id)
+            }
+            if (id === 'btn_delete') {
+                MsgBox.confirm('您确定要删除选中的项', function() {
+                    var ids = [];
+                    for (let obj of checkBox) {
+                        ids.push(obj.id);
+                    }
+                    $.post('/admin/expertInformation/deleteExpertInformation', {
+                        ids : ids.join(',')
+                    }, function(data) {
+                        MsgBox.alert(data.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    })
+                });
+            }
+        })
+    </script>
+</section>
+</body>
+</html>

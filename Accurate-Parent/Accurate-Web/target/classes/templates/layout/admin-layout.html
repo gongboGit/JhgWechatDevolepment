@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta charset="utf-8"/>
+        <title>[[${viewTitle }]]</title>
+
+        <meta name="description" content="overview &amp; stats"/>
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <meta name="content-type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">
+            var ajaxRequestPath = '/ajax/dicByKeyName';
+        </script>
+        <!-- bootstrap & fontawesome -->
+        <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/assets/bootstrap/css/font-awesome.min.css"/>
+
+        <!-- page specific plugin styles -->
+        <!-- text fonts -->
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace-fonts.css"/>
+
+        <!-- ace styles -->
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace.min.css"
+              id="main-ace-style"/>
+
+        <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace-part2.min.css"/>
+        <![endif]-->
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace-skins.min.css"/>
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace-rtl.min.css"/>
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace-switch-zh.css"/>
+
+        <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/assets/bootstrap/css/ace-ie.min.css"/>
+        <![endif]-->
+        <!-- inline styles related to this page -->
+        <!-- ace settings handler -->
+        <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+        <!--[if lte IE 8]>
+        <script src="/assets/bootstrap/js/html5shiv.min.js"></script>
+        <script src="/assets/bootstrap/js/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+            window.jQuery || document.write("<script src='/assets/bootstrap/js/jquery.min.js'>" + "<" + "/script>");
+        </script>
+        <script src="/assets/bootstrap/js/jsExt.js"></script>
+        <script src="/assets/bootstrap/pagination/jquery.pagination.js"></script>
+        <script src="/assets/bootstrap/js/SysDicLoader.js"></script>
+        <script src="/assets/bootstrap/js/ajax-submit.js"></script>
+        <script src="/assets/bootstrap/js/vue.min.js"></script>
+        <style>
+            input[type=checkbox].ace[disabled] + .lbl::before {
+                background-color: #A9A9A9 !important;
+            }
+
+            .Wdate {
+                height: 34px !important;
+            }
+
+            .actionrow {
+                color: #336199 !important;
+                cursor: pointer;
+            }
+
+            .caoge {
+                color: red;
+            }
+
+            .detail-row {
+                display: none;
+            }
+
+            .row-open {
+                display: table-row !important;
+            }
+
+            .profile-info-value input {
+                width: 400px;
+            }
+
+            ul.autoconplete {
+                list-style-type: none;
+                position: absolute;
+                background-color: white;
+                width: 400px;
+                left: -15px;
+                display: none;
+                z-index: 100;
+                border-radius: 1em;
+                -webkit-box-shadow: 3px 3px 6px #666;
+                -moz-box-shadow: 3px 3px 6px #666;
+                box-shadow: 3px 3px 6px #666;
+            }
+
+            ul.autoconplete li:hover {
+                background-color: #ddd;
+            }
+
+            ul.autoconplete li {
+                margin: 0;
+                padding: 8px;
+            }
+        </style>
+    </head>
+
+    <body class="no-skin">
+        <section th:replace="layout/shared::header"></section>
+        <div class="main-container" id="main-container">
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('main-container', 'fixed')
+                } catch (e) {
+                }
+            </script>
+
+            <!-- 侧边栏 -->
+            <div id="sidebar" class="sidebar responsive">
+                <script type="text/javascript">
+                    try {
+                        ace.settings.check('sidebar', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
+                <!-- 侧边栏快捷键 -->
+                <section layout:fragment="sidebar-shortcuts"></section>
+                <!-- 侧边栏菜单 -->
+                <section layout:fragment="menu">
+                    <section th:replace="layout/menu::row(${menuLs},1)"></section>
+                </section>
+                <!-- 侧边栏最小化 -->
+                <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                    <i class="ace-icon fa fa-angle-double-left"
+                       data-icon1="ace-icon fa fa-angle-double-left"
+                       data-icon2="ace-icon fa fa-angle-double-right"></i>
+                </div>
+
+                <!-- 侧边栏最小化js -->
+                <script type="text/javascript">
+                    try {
+                        ace.settings.check('sidebar', 'collapsed')
+                    } catch (e) {
+                    }
+                </script>
+            </div>
+
+            <!-- 主要内容 -->
+            <div class="main-content">
+                <!-- 面包屑 -->
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try {
+                            ace.settings.check('breadcrumbs', 'fixed')
+                        } catch (e) {
+                        }
+                    </script>
+                    <!-- 面包屑的内容 -->
+                    <section th:replace="layout/shared::sitemap"></section>
+                    <!-- /.breadcrumb -->
+                    <!-- #section:basics/content.searchbox -->
+                    <!-- <div class="nav-search" id="nav-search">
+                        <form class="form-search">
+                            <span class="input-icon"> <input type="text"
+                                placeholder="Search ..." class="nav-search-input"
+                                id="nav-search-input" autocomplete="off" /> <i
+                                class="ace-icon fa fa-search nav-search-icon"></i>
+                            </span>
+                        </form>
+                    </div> -->
+                    <!-- /.nav-search -->
+                    <!-- /section:basics/content.searchbox -->
+                </div>
+
+                <!-- 页面内容 -->
+                <div class="page-content">
+                    <div class="page-content-area">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- 页面内容的主要内容上面的导航工具栏 -->
+                                <section layout:fragment="navTools">
+                                    <div class="row">
+                                        <form>
+                                            <div class="col-xs-6" th:unless="${#lists.isEmpty(btnLs)}">
+                                                <section layout:fragment="authbutton">
+                                                    <th:block th:each="btn:${btnLs}">
+                                                        <a class="btn" th:data-bind-style="${btn.mark}" href="#"
+                                                           th:id="${btn.keyName}">
+                                                            <i class="ace-icon fa bigger-110"></i>
+                                                            [[${btn.value}]]
+                                                        </a>
+                                                    </th:block>
+                                                </section>
+                                                <script type="text/javascript">
+                                                    //设置按钮样式
+                                                    $(function () {
+                                                        $('a[data-bind-style]').each(function (i, element) {
+                                                            let bStyle = $(this).attr('data-bind-style');
+                                                            var arr = bStyle.split('|');
+                                                            var aCss = arr[0];
+                                                            var iCss = arr[1];
+                                                            $(this).addClass(aCss);
+                                                            $('i.ace-icon', $(this)).addClass(iCss);
+                                                        });
+                                                    })
+                                                </script>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <section layout:fragment="rightNav"></section>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div th:unless="${#lists.isEmpty(btnLs)}"
+                                         class="hr hr-18 dotted hr-double"></div>
+                                </section>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- 页面内容的主要内容 -->
+                                        <section layout:fragment="content"></section>
+                                    </div>
+                                </div>
+                                <!-- 分页 -->
+                                <section layout:fragment="contentExt">
+                                    <div class="row" th:if="${pageInfo} != null and ${pageInfo.total} != 0">
+                                        <div class="col-xs-12">
+                                            <div class="dataTables_paginate ">
+                                                <ul class="pagination">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <script type="text/javascript" th:inline="javascript">
+                                            $('.pagination').pagination({
+                                                totalData: [[${pageInfo.total}]] == 0 ? 1 : [[${pageInfo.total}]],
+                                                showData: [[${pageInfo.pageSize}]],
+                                                coping: true,
+                                                jump: false,
+                                                pageparamName: 'pageindex',
+                                                current: [[${pageInfo.pageNum}]],
+                                                homePage: '首页',
+                                                endPage: '末页',
+                                                isHide: true,
+                                                prevContent: '上页',
+                                                nextContent: '下页',
+                                                callback: function (api, opt) {
+
+                                                    let jumpUrl = location.pathname;
+
+                                                    let search = location.search.replace('?', '').split('&').filter(function (it) {
+                                                        return it.indexOf(opt.pageparamName + '=') < 0
+                                                    }).join('&');
+
+                                                    jumpUrl += '?' + (search ? search + '&' : '') + opt.pageparamName + '=' + api.getCurrent();
+                                                    location.href = jumpUrl;
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 脚部 -->
+            <section th:replace="layout/shared::footer"></section>
+            <a href="#" id="btn-scroll-up"
+               class="btn-scroll-up btn btn-sm btn-inverse">
+                <i
+                        class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+            </a>
+        </div>
+        <!-- /.main-container -->
+        <!-- basic scripts -->
+        <!--[if !IE]> -->
+
+
+        <!-- <![endif]-->
+        <!--[if IE]>
+        <script type="text/javascript">
+            window.jQuery || document.write("<script src='/assets/bootstrap/js/jquery1x.min.js'>" + "<" + "/script>");
+        </script>
+        <![endif]-->
+        <script type="text/javascript">
+            if ('ontouchstart' in document.documentElement) document.write("<script src='/assets/bootstrap/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        </script>
+        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#View_back').click(function () {
+                    history.go(-1);
+                })
+                $('#sidebar-collapse').click(function () {
+                    $('#sidebar').toggleClass("menu-min");
+                })
+            })
+        </script>
+
+        <!-- page specific plugin scripts -->
+        <!--[if lte IE 8]>
+        <script src="/assets/bootstrap/js/excanvas.min.js"></script>
+        <![endif]-->
+        <script src="/assets/bootstrap/js/ace.min.js"></script>
+        <script src="/assets/bootstrap/layer/layer.js"></script>
+        <script src="/assets/bootstrap/js/table.checkbox.selector.js"></script>
+        <script src="/assets/bootstrap/js/MsgBox.js"></script>
+        <script th:inline="javascript">
+            $(function () {
+                var MENUSTEP = 3;
+                var selectLevel = [[${viewLevel}]] || '';
+                var curNode = $('li[menulevel="' + selectLevel + '"]');
+                while (selectLevel.length > 0 && curNode.length < 1) {
+                    selectLevel = selectLevel.substring(0, selectLevel.length - 3);
+                    curNode = $('li[menulevel="' + selectLevel + '"]');
+                }
+
+                curNode.addClass('active');
+                curNode.parents('li').addClass('active hsub open');
+            });
+        </script>
+        <section layout:fragment="script"></section>
+        <script src="/assets/bootstrap/My97DatePicker/WdatePicker.js"></script>
+    </body>
+</html>

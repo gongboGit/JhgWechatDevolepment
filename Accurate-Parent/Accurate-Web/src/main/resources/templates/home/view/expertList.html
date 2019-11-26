@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>专家信息</title>
+    <link href="/assets/css/TenG9.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/assets/vue.js"></script>
+    <script src="/assets/axios.min.js"></script>
+</head>
+
+<body ontouchstart>
+<header class="demos-header">
+    <h1 class="demos-title ">专家信息</h1>
+    <p class="demos-sub-title">南阳诸葛庐，西蜀子龙亭，何陋之有！</p>
+</header>
+<div class="weui-cells weui-cells_form" id="expertList">
+    <div class="weui-cell">
+        <div class="col-xs-11">
+            <label id="ksname" class="weui-label" style="color:rgba(0,0,0,0.24)" v-html="ksname"></label>
+        </div>
+        <div class="col-xs-1"><i id="picker" class="mdui-icon material-icons">&#xe5c5;</i></div>
+    </div>
+    <div class="weui-cell back_color">
+        <ul class="mdui-list">
+            <div v-for="i in objList">
+                <a v-bind:href="'/view/expertInformation?expertInfoId='+i.id">
+                    <li class="mdui-list-item mdui-ripple">
+                        <div class="mdui-list-item-avatar"><img v-bind:src="i.headImgUrl"/></div>
+                        <div class="mdui-list-item-content">
+                            <div class="mdui-list-item-title">{{ i.name }}</div>
+                            <div class="mdui-list-item-text mdui-list-item-one-line"><span
+                                    class="mdui-text-color-theme-text">{{ i.description }}</span></div>
+                        </div>
+                    </li>
+                    <li class="mdui-divider-inset mdui-m-y-0"></li>
+                </a>
+            </div>
+        </ul>
+    </div>
+</div>
+<!-- <input type="text" id="picker" /> -->
+</body>
+<script>
+    var expertList = new Vue({
+        el: "#expertList",
+        data: {
+            ksname: '请选择',
+            objList: '',
+            kslist: '',
+        },
+        //初始化接口---查询科室信息
+        created() {
+            var that = this;
+            // axios.get('/listDepartment', {
+            //
+            //     })
+            //     .then(function(result) {
+            //         that.kslist = result.data.data;
+            //         console.info(that.kslist);
+            //
+            //     })
+            //     .catch(function(error) {
+            //         console.log(error);
+            //     })
+        },
+        mounted() {
+            var that = this;
+            axios.get('/listDepartment', {})
+                .then(function (result) {
+                    that.kslist = result.data.data;
+                    $("#picker").picker({
+                        title: "请选择专家科室",
+                        cols: [{
+                            textAlign: 'center',
+                            values: that.kslist,
+                        }],
+                        onClose: function () {
+                            $("#ksname").empty();
+                            $("#ksname").append($("#picker").val());
+                            axios.get('/listExpertInfoByDepartmentName', {
+                                params: {
+                                    departmentName: $("#picker").val()
+                                }
+                            })
+                                .then(function (result) {
+                                    that.objList = result.data.data;
+                                    /* that.ksname=result.data.kslist[0]; */
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                })
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+    })
+</script>
+</html>

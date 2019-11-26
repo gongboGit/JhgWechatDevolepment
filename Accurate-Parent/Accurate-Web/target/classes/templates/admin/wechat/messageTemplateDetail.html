@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div>
+        模板标题：<p id="template_title"></p>
+    </div>
+    <div>
+        内容：
+        <pre id="content"></pre>
+    </div>
+    <div>
+        例子：
+        <pre id="example"></pre>
+    </div>
+    <div>
+        <form id="key" class="form-horizontal">
+            <div class="form-group">
+                <label class='col-sm-1 control-label' for="url">url</label>
+                <div class="col-sm-6">
+                    <input id="url" class="form-control" name="url" value="" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class='col-sm-1 control-label' for="title">消息标题</label>
+                <div class="col-sm-6">
+                    <input id="title" class="form-control" name="title" value="" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class='col-sm-1 control-label' for="diseasesType">病种类型</label>
+                <div class="col-sm-6">
+                    <select name="diseasesType" id="diseasesType">
+                        <option value="">全部</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <button onclick="insertTemplateMessage()">保存消息</button>
+</div>
+<section layout:fragment="script">
+    <script th:inline="javascript">
+        let templateId = [[${param.templateId}]];
+        $.ajax({
+            url: "/admin/templateMessage/getTemplateInfo",
+            type: "post",
+            data: {"templateId": templateId[0]},
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data.data;
+                    $('#template_title').html(data.title);
+                    $('#content').html(data.content);
+                    let example;
+                    if (data.example) {
+                        example = data.example;
+                    } else {
+                        example = "（空）";
+                    }
+                    $('#example').html(example);
+                    let keyList = result.data.keyList;
+                    let str = "";
+                    for (let i in keyList) {
+                        str += "<div class=\"form-group\">" +
+                            "<label class='col-sm-1 control-label' for=\"" + keyList[i] + "\">" + keyList[i] + "</label>" +
+                            "<div class=\"col-sm-6\">" +
+                            "            <input id=\"" + keyList[i] + "\" class=\"form-control\" name=\"" + keyList[i] + "\" value=\"\" type=\"text\">" +
+                            "</div>" +
+                            "</div>";
+                    }
+                    $('#key').html(str+$('#key').html());
+                }
+            }
+        });
+
+        $.ajax({
+            url: '/admin/ajax/listDiseasesType',
+            type: 'get',
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 1) {
+                    let str = '';
+                    let data = result.data;
+                    for (let i in data) {
+                        str += "<option value=\"" + data[i].id + "\">" + data[i].name + "</option>";
+                    }
+                    $('#diseasesType').append(str);
+                }
+            }
+        });
+
+        function insertTemplateMessage() {
+            let param = $('#key').serializeObject();
+            $.ajax({
+                url: "/admin/templateMessage/insertMessage",
+                data: {
+                    "param": JSON.stringify(param),
+                    "url": $('#url').val(),
+                    "templateTitle": $('#template_title').html(),
+                    "templateId": templateId[0],
+                    "title": $('#title').val(),
+                    "diseasesTypeId": $('#diseasesType').val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg, function () {
+                        if (result.code == 1) {
+                            location.href = "/admin/wechat/messageTemplate";
+                        }
+                    });
+                }
+            })
+        }
+
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        }
+    </script>
+</section>
+</body>
+</html>

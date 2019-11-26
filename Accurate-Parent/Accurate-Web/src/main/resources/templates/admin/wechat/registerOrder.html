@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="/assets/util.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <!--<select class="form-control" id="statusSelect"-->
+    <!--style="width:250px;height:42px;margin-right:10px;">-->
+    <!--<option value="">选择状态</option>-->
+    <!--<option value="0">拒绝退款</option>-->
+    <!--<option value="1">申请退款</option>-->
+    <!--<option value="2">退款成功</option>-->
+    <!--<option value="3">退款失败</option>-->
+    <!--</select>-->
+    <table id="table"></table>
+    <!--<div id="refund">-->
+    <!--<form id="refundFrom" class="form-horizontal">-->
+    <!--<div class="form-group">-->
+    <!--<label for="outTradeNo" class="col-sm-3 control-label">商户订单号：</label>-->
+    <!--<div class="col-sm-7">-->
+    <!--<input type="text" id="outTradeNo" class="form-control" name="outTradeNo">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="totalFee" class="col-sm-3 control-label">订单金额：</label>-->
+    <!--<div class="col-sm-7">-->
+    <!--<input type="text" id="totalFee" class="form-control" name="totalFee">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="refundFee" class="col-sm-3 control-label">退款金额：</label>-->
+    <!--<div class="col-sm-7">-->
+    <!--<input type="text" id="refundFee" class="form-control" name="refundFee">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="refundDesc" class="col-sm-3 control-label">退款原因：</label>-->
+    <!--<div class="col-sm-7">-->
+    <!--<input type="text" id="refundDesc" class="form-control" name="refundDesc">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<div class="col-sm-offset-2 col-sm-10">-->
+    <!--<button onclick="refundEvent()" class="btn btn-primary">确定</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<input type="hidden" id="id" name="applyId">-->
+    <!--</form>-->
+    <!--</div>-->
+    <!--<div id="refundDeny" class="form-horizontal">-->
+    <!--<div class="form-group">-->
+    <!--<label for="remark" class="col-sm-3 control-label">备注：</label>-->
+    <!--<div class="col-sm-7">-->
+    <!--<input type="text" id="remark" class="form-control" name="remark">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<div class="col-sm-offset-2 col-sm-10">-->
+    <!--<button onclick="refundDenyEvent()" class="btn btn-primary">确定</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<input type="hidden" id="applyId">-->
+    <!--</div>-->
+</div>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        // $('#statusSelect').change(function () {
+        //     initTable();
+        // });
+        $(function () {
+            // $('#refundDeny').hide();
+            // $('#refund').hide();
+            initTable();
+        });
+
+        function initTable() {
+            $('#table').bootstrapTable('destroy').bootstrapTable({
+                columns: [
+                    [{
+                        checkbox: true
+                    }, {
+                        field: 'registerTime',
+                        title: '挂号时间',
+                        align: 'center',
+                        formatter: function (value) {
+                            return formatDate(new Date(value), "yyyy-MM-dd")
+                        }
+                    }, {
+                        field: 'tradeState',
+                        title: '订单状态',
+                        align: 'center',
+                        formatter: function (value) {
+                            if (value == 0) {
+                                return "支付成功";
+                            } else if (value == 1) {
+                                return "转入退款";
+                            } else if (value == 2) {
+                                return "未支付";
+                            } else if (value == 3) {
+                                return "已关闭";
+                            } else if (value == 4) {
+                                return "已撤销（付款码支付）";
+                            } else if (value == 5) {
+                                return "用户支付中（付款码支付）";
+                            } else {
+                                return "支付失败（其他原因）";
+                            }
+                        }
+                    },  {
+                        field: 'name',
+                        title: '名字',
+                        align: 'center'
+                    }, {
+                        field: 'idCard',
+                        title: '身份证号',
+                        align: 'center'
+                    },{
+                        field: 'totalFee',
+                        title: '支付金额（单位/元）',
+                        align: 'center', formatter: function (value) {
+                            return value / 100;
+                        }
+                    }, {
+                        field: 'createTime',
+                        title: '下单时间',
+                        align: 'center',
+                        formatter: function (value) {
+                            if (isBlank(value)) {
+                                return '-';
+                            }
+                            return formatDate(new Date(value), "yyyy-MM-dd HH:mm:ss")
+                        }
+                    }/*, {
+                        field: 'operate',
+                        title: '操作',
+                        formatter: operateFormatter //自定义方法，添加操作按钮
+                    }*/
+                    ]
+                ],
+                url: "/weChatPay/listWeChatPayForRegister", //请求数据的地址URL
+                responseHandler: function (result) {
+                    if (result.code == 1) {
+                        return result.data;
+                    } else {
+                        //TODO 请求数据失败
+                    }
+                },
+                method: 'post', //请求方式(*)
+                striped: true, //是否显示行间隔色
+                cache: true, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性(*)
+                pagination: true, //是否显示分页(*)
+                sortable: true, //是否启用排序
+                theadClasses: 'dark',
+                sortOrder: "desc", //排序方式
+                sidePagination: "client", //分页方式：client客户端分页，server服务端分页(*)
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数(*)
+                pageList: [10, 50, 100], //可供选择的每页的行数(*)
+                showColumns: false, //是否显示所有的列
+                /*  showRefresh: true,*/ //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                /* height: 600,*/
+                detailView: false, //是否显示父子表    *关键位置*
+                queryParamsType: "limit",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                checkboxHeader: true,
+                 search: true,
+                // queryParams: queryParams,
+                showHeader: true,
+                maintainSelected: true,
+                searchFormatter: true,
+                // singleSelect: true,
+                onDblClickRow: function (row) {
+                    console.info('双击行！');
+                }
+                /*showColumns: true,*/ // 开启自定义列显示功能
+                //注册加载子表的事件。你可以理解为点击父表中+号时触发的事件
+
+
+            });
+        }
+
+        //TODO 查询参数
+        function queryParams(params) {
+            let status = $('#statusSelect option:selected').val();
+            if (status) {
+                return {"status": status};
+            } else {
+                return null;
+            }
+        }
+
+        // 格式化按钮
+        function operateFormatter(value, row, index) {
+            if (row.status == 1 || row.status == 3) {
+                return [
+                    '<button type="button" class="btn-small btn-primary" onclick="refund(' + row.id + ',\'' + row.remark + '\',' + row.outTradeNo + ',' + row.fee + ',' + row.totalFee + ')" style="margin-right:15px;">退款</button>',
+                    '<button type="button" class="btn-small btn-primary" onclick="refundDeny(' + row.id + ')" style="margin-right:15px;">拒绝</button>',
+                ].join('');
+            } else {
+                return '';
+            }
+        }
+
+    </script>
+</section>
+</body>
+</html>

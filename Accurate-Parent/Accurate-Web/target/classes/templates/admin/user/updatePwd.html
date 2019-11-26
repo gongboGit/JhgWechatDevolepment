@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <link rel="stylesheet" href="/assets/layui/css/layui.css"/>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="/assets/util.js"></script>
+    <script src="/assets/layui/layui.js"></script>
+
+</head>
+<body>
+<section layout:fragment="script">
+    <script type="text/javascript">
+        layui.use('form' ,function(){
+            var form = layui.form;
+            //监听提交
+            form.on('submit(setmypass)', function(data){
+                return false;
+            });
+        });
+        function changePassword() {
+            var oldPassword=$("#oldPassword").val();
+            var newPassword=$("#LAY_password").val();
+            var newPassword2=$("#newPassword").val();
+            if(newPassword!==newPassword2){
+                layer.msg("新密码和确认密码不同");
+            }else{
+                $.ajax({
+                    type: "post",
+                    url: "/admin/ajax/updatePassword",
+                    data:{
+                        "password":oldPassword,
+                        "newPassword":newPassword2
+                    },
+                    dateType: 'html' ,
+                    success: function (data) {
+                        if(data.code == 1){
+                            layer.msg("修改成功",function () {
+                                window.location.href = "/admin/user/logout";
+                            });
+                        }else{
+                            layer.msg("修改失败");
+                        }
+                    },
+                    error: function () {
+                        layer.msg("请求错误");
+                    }
+                })
+            }
+        }
+    </script>
+</section>
+<div layout:fragment="content">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">修改密码</div>
+                    <div class="layui-card-body">
+
+                        <div class="layui-form" action="" lay-filter="form">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">当前密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" autocomplete="new-password" lay-verify="required" lay-verType="tips" class="layui-input" id="oldPassword">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">新密码</label>
+                                <div class="layui-input-inline">
+                                    <input name="password" type="password"  lay-verType="tips" autocomplete="off" id="LAY_password" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">确认新密码</label>
+                                <div class="layui-input-inline">
+                                    <input  name="repassword" type="password"  lay-verType="tips" autocomplete="off" class="layui-input" id="newPassword">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="setmypass" onclick="changePassword()">确认修改</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+.divOne{
+	margin-top:0 !important;
+}
+.divTwo{
+	font-size: 20px !important;
+}
+.divThree{
+	padding: 0px 0px !important;
+}
+.divFour{
+	font-size: 24px !important;
+	color: rgba(0,0,0,.28) !important;
+	font-weight: 500 !important;
+}
+.divFive{
+	text-align: left !important;
+}
+.bodyTwo{
+	background-color: #F7F7F7;
+	line-height: 1.16;
+	z-index: 999;
+}
+.mdui-bottom-nav a.mdui-bottom-nav-active{
+	color: #3399cc !important;
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>预交款详情</title>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/css/myTable.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <div class="page__hd">
+        <h1 class="page__title" style="text-align: center">预交款详情</h1>
+    </div>
+    <div class="page__bd">
+        <!--开始行数据-->
+<!--结束行数据-->
+</div>
+<div class="weui-form-preview__ft">
+    <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+</div>
+</div>
+</body>
+<script th:inline="javascript">
+    $(function () {
+        getPrePayMoney();
+    });
+
+    function getPrePayMoney() {
+        $.ajax({
+            url: '/getPrePayMoney',
+            type: 'post',
+            data: {'hospitalizationNumber': [[${param.ZYH}]][0]},
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        for (let i in data) {
+                            str += "<div class=\"weui-form-preview\">\n" +
+                                "            <div class=\"weui-form-preview__hd\">\n" +
+                                "                <div class=\"weui-form-preview__item\">\n" +
+                                "                    <label class=\"weui-form-preview__label\">姓名</label>\n" +
+                                "                    <em class=\"weui-form-preview__value\">" + data[i].BRXM + "</em>\n" +
+                                "                </div>\n" +
+                                "            </div>\n" +
+                                "            <div class=\"weui-form-preview__bd\">\n" +
+                                "                <div class=\"weui-form-preview__item\">\n" +
+                                "                    <label class=\"weui-form-preview__label\">住院号</label>\n" +
+                                "                    <span class=\"weui-form-preview__value\">" + data[i].ZYH + "</span>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"weui-form-preview__item\">\n" +
+                                "                    <label class=\"weui-form-preview__label\" style=\"color:blue\">预交总额</label>\n" +
+                                "                    <span class=\"weui-form-preview__value\" style=\"color:maroon\">" + data[i].YJZE + "</span>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"weui-form-preview__item\">\n" +
+                                "                    <label class=\"weui-form-preview__label\" style=\"color:blue\">产生费用</label>\n" +
+                                "                    <span class=\"weui-form-preview__value\" style=\"color:maroon\">" + data[i].WJFY + "</span>\n" +
+                                "                </div>\n" +
+                                "                <div class=\"weui-form-preview__item\">\n" +
+                                "                    <label class=\"weui-form-preview__label\" style=\"color:blue\">账户余额</label>\n";
+                            if (data[i].SYJE < 0) {
+                                str += "<span class=\"weui-form-preview__value\" style=\"color:red;font-weight:bold\">" + data[i].SYJE + "</span>"
+                            }
+                            else {
+                                str += "<span class=\"weui-form-preview__value\" style=\"color:maroon\">" + data[i].SYJE + "</span>"
+                            }
+                            str += "    </div>\n" +
+                                "</div>\n" +
+                                "<div class=\"weui-form-preview__ft\">\n" +
+                                "    <a class=\"weui-form-preview__btn weui-form-preview__btn_primary\" href=\"/payPreMoney?ZYH="+ data[i].ZYH +"&XM="+data[i].BRXM+"&ZHYE="+data[i].SYJE+"\">去交预交金</a>\n" +
+                                "</div>\n" +
+                                "</div>\n" +
+                                "<div class=\"page__hd\">\n" +
+                                "    <p class=\"page__desc\" style=\"text-align:left\">以下为有效预交款明细记录（已退费不再显示）</p>\n" +
+                                "</div>"
+                            if (data[i].MXLST != null && data[i].MXLST.length != 0) {
+                                for (let j in data[i].MXLST) {
+                                    let mx = (data[i].MXLST)[j];
+                                    str += "<div class=\"weui-form-preview\">\n" +
+                                        "    <div class=\"weui-form-preview__bd\">\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">单据号</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\">"+ mx.DJH +"</span>\n" +
+                                        "        </div>\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">交款人</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\">"+mx.JKR+"</span>\n" +
+                                        "        </div>\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">交款方式</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\" style=\"color:maroon\">"+mx.JSFS+"</span>\n" +
+                                        "        </div>\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">交款金额</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\" style=\"color:maroon\">"+mx.JE+"</span>\n" +
+                                        "        </div>\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">金额大写</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\" style=\"color:maroon\">"+mx.DXJE+"</span>\n" +
+                                        "        </div>\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">收款人</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\">"+mx.SKR+"</span>\n" +
+                                        "        </div>\n" +
+                                        "        <div class=\"weui-form-preview__item\">\n" +
+                                        "            <label class=\"weui-form-preview__label\">收款时间</label>\n" +
+                                        "            <span class=\"weui-form-preview__value\">"+mx.SKSJ+"</span>\n" +
+                                        "        </div>\n" +
+                                        "    </div>\n" +
+                                        "</div>"
+                                }
+                            }
+                        }
+                    } else {
+                        str += "<div class=\"weui-form-preview\">\n" +
+                            "    <div class=\"weui-form-preview__bd\">\n" +
+                            "        <div class=\"weui-form-preview__item\">\n" +
+                            "            <span class=\"weui-form-preview__value\">无相关信息</span>\n" +
+                            "        </div>\n" +
+                            "    </div>\n" +
+                            "</div>"
+                    }
+                    $('.page__bd').html(str);
+                }
+            }
+        })
+    }
+</script>
+</html>

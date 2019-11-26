@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <th:block th:fragment="row(menuls,idx)">
+            <ul th:class="${idx}==1?'nav nav-list':'submenu'">
+                <th:block th:each="menuitem:${menuls}">
+                    <li th:menulevel="${menuitem.node.id}">
+                        <a th:href="${!#strings.isEmpty(menuitem.node.url)?menuitem.node.url:'#'}"
+                           th:class="!${#lists.isEmpty(menuitem.children)}?'dropdown-toggle':''">
+                            <i th:class="${'menu-icon fa '+(!#strings.isEmpty(menuitem.node.icon)?menuitem.node.icon:'fa-caret-right')}"></i>
+                            <span class="menu-text" th:text="${menuitem.node.title}">Dashboard</span>
+                            <b th:unless="${#lists.isEmpty(menuitem.children)}" class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        <th:block th:unless="${#lists.isEmpty(menuitem.children)}"
+                                  th:include="this::row(${menuitem.children},${idx+1})"/>
+                    </li>
+                </th:block>
+            </ul>
+        </th:block>
+    </body>
+</html>

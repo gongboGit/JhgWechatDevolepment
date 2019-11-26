@@ -1,0 +1,3 @@
+url: https://sdk2.028lk.com/sdk2/LinkWS.asmx?wsdl
+account: JHG001901
+password: jhg2016!@

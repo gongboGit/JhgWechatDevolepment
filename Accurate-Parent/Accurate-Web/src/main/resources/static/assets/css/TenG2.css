@@ -1,0 +1,50 @@
+.body{
+	
+}
+html{
+	font-size: 62.5%;
+}
+.thOne{
+	text-align: center !important;
+}
+.thTwo{
+	border-bottom:5px solid rgba(0,0,0,.12)  !important;
+}
+.tableOne{
+	table-layout:fixed;
+	word-break:break-all;
+	/*background-image:url(/assets/images/背景图2.jpg) !important;*/
+	background-repeat:no-repeat !important; 
+	background-size:100% 100% !important;
+	-moz-background-size:100% 100% !important;
+}
+.jyjl{
+	color: #cc0033 !important;
+}
+.jyName{
+	font-size: 1.5rem !important;
+	font-weight:800 !important;
+}
+.mdui-col, [class*=mdui-col-lg-], [class*=mdui-col-md-], [class*=mdui-col-sm-], [class*=mdui-col-xl-], [class*=mdui-col-xs-] {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.tbodyOne{
+	background-image: url(/assets/images/TenG3.png);
+}
+.tdOne{
+	text-align: center !important;
+	color: rgba(0,0,0,.54) !important;
+}
+.mdui-table th{
+	white-space: !important;
+}
+.trOne{
+	border-bu: 2px red solid;
+}
+.mdui-table th:first-child{
+	padding-left:0px !important;
+}
+.mdui-table td, .mdui-table th{
+	padding: 12px 0px !important;
+}

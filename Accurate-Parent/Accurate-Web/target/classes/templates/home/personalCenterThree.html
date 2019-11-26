@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+		<title>个人中心</title>
+		<link href="/assets/css/TenG4.css" rel="stylesheet" />
+		<link href="/assets/css/main.css" rel="stylesheet" />
+		<link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet" />
+		<link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet" />
+		<link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet" />
+		<link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet" />
+		<script src="/assets/jquery-1.9.1.min.js"></script>
+		<script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+		<script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+	</head>
+	<body ontouchstart class="mdui-bottom-nav-fixed">
+		<div class="mdui-bottom-nav bodyTwo">
+			<a href="/personalCenterOne" class="mdui-ripple">
+				<i class="mdui-icon material-icons">history</i>
+				<label>首页</label>
+			</a>
+			<a href="/personalCenterTwo" class="mdui-ripple">
+				<i class="mdui-icon material-icons">favorite</i>
+				<label>医院信息</label>
+			</a>
+			<a href="javascript:;" class="mdui-ripple mdui-bottom-nav-active">
+				<i class="mdui-icon material-icons">location_on</i>
+				<label>我的</label>
+			</a>
+		</div>
+		<div class="mdui-container-fluid">
+			<div class="divOne">
+				<div class="bg bg-blur"></div>
+				<div class="content-front content"><img th:src="${session.user?.headImgUrl}" src="/assets/images/头像.jpg" /></div>
+			</div>
+			<hr style="background: #E6E6E6; border: none; height: 3px;" />
+			<div class="weui-cells" id="model">
+				<a class="weui-cell weui-cell_access" href="/view/personalSettings">
+					<div class="weui-cell__hd">
+						<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe616;</span>
+					</div>
+					<div class="weui-cell__bd">
+						<p>设置</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<a class="weui-cell weui-cell_access" href="/view/managementHospitalCard">
+					<div class="weui-cell__hd">
+						<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe617;</span>
+					</div>
+					<div class="weui-cell__bd">
+						<p>我的就诊卡</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<a class="weui-cell weui-cell_access" href="/view/registerRecord">
+					<div class="weui-cell__hd">
+						<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe60a;</span>
+					</div>
+					<div class="weui-cell__bd">
+						<p>挂号记录</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<a class="weui-cell weui-cell_access" href="/userPayList">
+					<div class="weui-cell__hd">
+						<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe640;</span>
+					</div>
+					<div class="weui-cell__bd">
+						<p>缴费记录</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<!--<a class="weui-cell weui-cell_access" href="/healthDepartmentList">-->
+					<!--<div class="weui-cell__hd">-->
+						<!--<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe618;</span>-->
+					<!--</div>-->
+					<!--<div class="weui-cell__bd">-->
+						<!--<p>健康须知</p>-->
+					<!--</div>-->
+					<!--<div class="weui-cell__ft">-->
+					<!--</div>-->
+				<!--</a>-->
+				<a class="weui-cell weui-cell_access" href="/seekMedicalAdviceRecordList">
+					<div class="weui-cell__hd">
+						<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe638;</span>
+					</div>
+					<div class="weui-cell__bd">
+						<p>就诊记录</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+				<a class="weui-cell weui-cell_access" href="/hospitalizationRecordList">
+					<div class="weui-cell__hd">
+						<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe615;</span>
+					</div>
+					<div class="weui-cell__bd">
+						<p>住院记录</p>
+					</div>
+					<div class="weui-cell__ft">
+					</div>
+				</a>
+			</div>
+			<div style="width: 100%;height: 50px;"></div>
+			<!--<table width="100%" border="1" class="tableDiv">-->
+				<!--<tr>-->
+					<!--<td width="50%" class="tdDiv">-->
+						<!--<a href="/view/managementHospitalCard">-->
+							<!--<div><img src="/assets/images/我的就诊卡.png" /></div>-->
+							<!--<span>我的就诊卡</span>-->
+						<!--</a>-->
+					<!--</td>-->
+					<!--<td width="50%" class="tdDiv">-->
+						<!--<div><img src="/assets/images/关注.png" /></div>-->
+						<!--<span>我的关注</span>-->
+					<!--</td>-->
+				<!--</tr>-->
+			<!--</table>-->
+
+		</div>
+	</body>
+	<script th:inline="javascript">
+		$("#starttime").calendar();
+		$("#endtime").calendar();
+        let userId = [[${session.user.id}]];
+		$.ajax({
+			url: '/getBIPermission',
+			type: 'post',
+			data: {'userId':userId},
+			dataType: 'json',
+			success:function (result) {
+				if (result.code == 1 && result.data != null && result.data.length != 0) {
+                    let str = '<a class="weui-cell weui-cell_access" href="/BI/index.html">\n' +
+                        '\t\t\t\t\t<div class="weui-cell__hd">\n' +
+                        '\t\t\t\t\t\t<span class="iconfont" style="font-size: 1em; margin-right: 5px">&#xe638;</span>\n' +
+                        '\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t\t<div class="weui-cell__bd">\n' +
+                        '\t\t\t\t\t\t<p>手机BI</p>\n' +
+                        '\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t\t<div class="weui-cell__ft">\n' +
+                        '\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t</a>';
+				    $('#model').append(str)
+				}
+            }
+		})
+	</script>
+</html>

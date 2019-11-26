@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>一日清单详情</title>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <link href="/assets/css/myTable.css" rel="stylesheet"/>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <div class="page__hd">
+        <h1 class="page__title">一日清单明细</h1>
+        <p class="page__desc" style="text-align:left" id="date">日&nbsp;&nbsp;&nbsp;&nbsp;期：</p>
+        <p class="page__desc" style="text-align:left" id="countMoney">总金额：</p>
+    </div>
+    <hr />
+    <div class="page__bd">
+        <!--开始行数据-->
+        <!--结束行数据-->
+    </div>
+    <div class="weui-form-preview__ft">
+        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    let date = [[${param.date}]][0];
+    $(function () {
+        getHospitalizationOneDayDataInfo();
+        let countMoney = [[${param.countMoney}]][0];
+        $('#date').html($('#date').html() + date);
+        $('#countMoney').html($('#countMoney').html() + countMoney);
+    });
+
+    function getHospitalizationOneDayDataInfo() {
+        $.ajax({
+            url: '/getHospitalizationOneDayDataInfo',
+            type: 'post',
+            data: {'hospitalizationNumber': [[${param.ZYH}]][0], 'date': date},
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        str += "<table class=\"am-table\">\n" +
+                            "            <thead>\n" +
+                            "            <tr><td>项目</td><td>单位</td><td>数量</td><td>金额</td></tr>\n" +
+                            "            </thead>\n" +
+                            "            <tbody>";
+                        for (let i in data) {
+                            str += "<tr>\n" +
+                                "                <td>" + data[i].XMMC + "</td>\n" +
+                                "                <td>"+ data[i].XMDW +"</td>\n" +
+                                "                <td align=\"right\">"+ data[i].XMSL +"</td>\n" +
+                                "                <td align=\"right\">"+ data[i].XMJE +"</td>\n" +
+                                "            </tr>";
+                        }
+                        str += "</tbody>\n" +
+                            "        </table>"
+                    } else {
+                        str += "<div class=\"weui-form-preview\">\n" +
+                            "            <div class=\"weui-form-preview__bd\">\n" +
+                            "                <div class=\"weui-form-preview__item\">\n" +
+                            "                    <span class=\"weui-form-preview__value\">无费用数据</span>\n" +
+                            "                </div>\n" +
+                            "            </div>\n" +
+                            "        </div>";
+                    }
+                    $('.page__bd').html(str);
+                }
+            }
+        })
+    }
+</script>
+</html>

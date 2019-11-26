@@ -1,0 +1,73 @@
+.divOne{
+	height: 130px;
+	width: 100%;
+}
+.content {
+	color: #ffffff;
+	font-size: 40px;
+}
+.imgOne {
+	width: 20px;
+	height: 20px;
+}
+.bg {
+	background: url(/assets/images/个人中心背景图.jpg);
+	height: 120px;
+	text-align: center;
+	line-height: 120px;
+}
+
+.bg-blur {
+	float: left;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+
+.content-front {
+	position: absolute;
+	left: 10px;
+	right: 10px;
+	height: 120px;
+	line-height: 120px;
+	text-align: center;
+}
+.content img{
+	width: 70px;
+	height: 70px;
+	border-radius:50px
+}
+.tableDiv{
+	height: 90px !important;
+	border-spacing: 2px;
+	text-align: center;
+	border-collapse: collapse;
+}
+.tableDiv img{
+	width: 30px;
+	height: 30px;
+}
+.tdDiv{
+	border: #D5D5D5 1px solid;
+}
+.tableDiv td span{
+	color:rgba(0,0,0,.50);
+}
+.mdui-container-fluid {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+.bodyTwo{
+	background-color: #F7F7F7;
+	line-height: 1.16;
+	z-index: 999;
+}
+.mdui-bottom-nav a.mdui-bottom-nav-active{
+	color: #3399cc !important;
+}

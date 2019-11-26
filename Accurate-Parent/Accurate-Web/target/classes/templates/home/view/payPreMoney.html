@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+    <title>住院预交</title>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/css/myTable.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/jquery-weui-build/lib/zepto.js"></script>
+    <script src="/assets/js/example.js"></script>
+    <script src="/assets/js/fx.js"></script>
+    <script src="/assets/js/fx_methods.js"></script>
+    <script src="/assets/js/touch.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page" th:inline="text">
+    <div class="page__hd">
+        <h1 class="page__title" style="text-align: center">住院预交</h1>
+        <p class="page__desc" style="text-align:left" id="ZYH">住院号：</p>
+        <p class="page__desc" style="text-align:left" id="ZHYE">账户余额：</p>
+        <p class="page__desc" style="text-align:left">说明：预交金不支持输入小数,请提交前检查金额。</p>
+    </div>
+    <div class="page__bd">
+        <!--开始行数据-->
+        <form id="Relatation" method="POST">
+            <div class="weui-form-preview">
+                <div class="weui-form-preview__hd">
+                    <div class="weui-form-preview__item">
+                        <label class="weui-form-preview__label">姓名</label>
+                        <em class="weui-form-preview__value" style="color:maroon" id="XM"></em>
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">交款人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="JiaoKuanRen" name="JiaoKuanRen" type="text" placeholder="请输入交款人姓名" />
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">交款金额</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="JiaoKuanJinE" name="JiaoKuanJinE" type="number" onkeyup="this.value=this.value.replace(/\D/g,'')" maxlength="5" placeholder="请输入交款金额" />
+                    </div>
+                </div>
+
+                <div class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" id="frmSubmit">去支付</a>
+                </div>
+            </div>
+        </form>
+        <!--结束行数据-->
+        <div class="weui-form-preview__ft">
+            <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+        </div>
+    </div>
+</div>
+
+<div class="js_dialog" id="Dialog" style="display: none;">
+    <div class="weui-mask"></div>
+    <div class="weui-dialog weui-skin_android">
+        <div class="weui-dialog__hd">
+            <strong class="weui-dialog__title">提示</strong>
+        </div>
+        <div class="weui-dialog__bd" id="errorTxt">
+        </div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+        </div>
+    </div>
+</div>
+<div id="toast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <p class="weui-toast__content">缴费成功</p>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    let hospitalizationNumber = [[${param.ZYH}]][0];
+    let ZHYE = [[${param.ZHYE}]][0];
+    let name = [[${param.XM}]][0];
+    $('#ZYH').html($('#ZYH').html() + hospitalizationNumber);
+    $('#ZHYE').html($('#ZHYE').html() + ZHYE);
+    $('#XM').html($('#XM').html() + name);
+    $('#Dialog').on('click', '.weui-dialog__btn', function () {
+        $(this).parents('.js_dialog').fadeOut(200);
+    });
+    var $toast = $('#toast');
+    $('#frmSubmit').click(function () {
+        var jkr = $('#JiaoKuanRen').val();
+        var jkje = $('#JiaoKuanJinE').val();
+
+        if (jkje <= 0) {
+            var $androidDialog = $('#Dialog');
+            $('#errorTxt').text("交款金额必须大于0!");
+            $androidDialog.fadeIn(200);
+            console.info(1)
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '',
+            data: { 'hospitalizationNumber': hospitalizationNumber, 'moneyCount': jkje, 'payPersonName': jkr },
+            dataType: 'json',
+            timeout: 10000,
+            success: function (data) {
+                if (data.code == 1) {
+                    $('#showToast').on('click', function () {
+                        if ($toast.css('display') !== 'none') return;
+                        $toast.fadeIn(100);
+                        setTimeout(out, 1500);
+                    });
+                    window.location.replace('/prePayMoney?ZYH=' + hospitalizationNumber);
+                }
+                else {
+                    var $androidDialog = $('#Dialog');
+                    $('#errorTxt').text("提示消息:" + data.msg);
+                    $androidDialog.fadeIn(200);
+                }
+            },
+            error: function (xhr, type) {
+
+            }
+        });
+    });
+
+    function out(parameters) {
+        $toast.fadeOut(100);
+        // location.href = "/personalCenterThree";
+    }
+</script>
+</html>

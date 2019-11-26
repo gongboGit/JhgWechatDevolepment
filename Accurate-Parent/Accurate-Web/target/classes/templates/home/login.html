@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="#" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <!--<script src="/assets/layui/layui.js"></script>-->
+    <script src="/assets/bootstrap/layer/layer.js"></script>
+
+    <title>账号注册</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        
+        html,body {
+            height: 100%;
+        }
+
+        @font-face {
+            font-family: 'neo';
+            src: url("/assets/font/NEOTERICc.ttf");
+        }
+        input:focus{
+			outline: none;
+		}
+		.form input{
+			width: 300px;
+			height: 30px;
+			font-size: 18px;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #fff;
+            color: #fff;
+            margin-bottom: 20px;
+		}
+        .form input::placeholder{
+            color: rgba(255,255,255,0.8);
+            font-size: 18px;
+            font-family: "neo";
+        }
+		.inputOne::placeholder{
+			color: rgba(255,255,255,0.8);
+			font-size: 18px;
+			font-family: "neo";
+		}
+		.btn{
+			width:140px;
+			height: 40px;
+			border: 1px solid #fff;
+            background: none;
+			font-size:20px;
+			color: #fff;
+            cursor: pointer;
+            margin-top: 25px;
+            /* font-family: "neo"; */
+            transition: .25s;
+		}
+        .btn:hover{
+            background: rgba(255,255,255,.25);
+        }
+        #login_wrap{
+            width: 980px;
+            min-height: 500px;
+            border-radius: 10px;
+            font-family: "neo";
+            overflow: hidden;
+            box-shadow: 0px 0px 120px rgba(0, 0, 0, 0.25);
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            margin-top: -250px;
+            margin-right: -490px;
+        }
+        #login{
+            width: 50%;
+            height: 100%;
+            min-height: 500px;
+            background: linear-gradient(45deg, #3366cc, #66ffff); 
+            position: relative;
+            float: right;
+        }
+        #login #status{
+            width: 90px;
+            height: 35px;
+            margin: 40px auto;
+            color: #fff;
+            font-size: 30px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        #login #status i{
+            font-style: normal;
+            position: absolute;
+            transition: .5s
+        }
+        #login span{
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            margin-left: -150px;
+            top: 52%;
+            margin-top: -140px;
+        }
+        #login span a{
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            margin-top: 80px;
+            font-size: 18px;
+        }
+        #bg{
+             background: linear-gradient(45deg, #3366cc, #66ffff); 
+            height: 100%;
+        }
+        /*提示*/
+        #hint{
+            width: 100%;
+            line-height: 70px;
+            background: linear-gradient(-90deg, #9b494d, #bf5853);
+            text-align: center;
+            font-size: 25px;
+            color: #fff;
+            box-shadow: 0 0 20px #733544;
+            display: none;
+            opacity: 0;
+            transition: .5s;
+            position: absolute;
+            top: 0;
+            z-index: 999;
+        }
+        /* 响应式 */
+        @media screen and (max-width:1000px ) {
+            #login_wrap{
+                width: 490px;
+                margin-right: -245px;
+            }
+            #login{
+                width: 100%;
+                
+            }
+        }
+        @media screen and (max-width:560px ) {
+            #login_wrap{
+                width: 330px;
+                margin-right: -165px;
+            }
+            #login span{
+                margin-left: -125px;
+            }
+            .form input{
+                width: 250px;
+            }
+			.fromOne{
+			    width: 160px !important;
+			    height: 30px !important;
+			    font-size: 18px !important;
+			    background: none !important;
+			    border: none !important;
+			    border-bottom: 1px solid #fff !important;
+			    color: #fff !important;
+			    margin-bottom: 20px !important;
+			}
+            .btn{
+                width: 113px;
+				margin-top: 10px !important;
+            }
+        }
+        @media screen and (max-width:345px ) {
+            #login_wrap {
+                width: 290px;
+                margin-right: -145px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="bg">
+        <div id="hint"><!-- 提示框 -->
+            <p>登录失败</p>
+        </div>
+        <div id="login_wrap">
+            <div id="login"><!-- 登录注册切换动画 -->
+                <div id="status">
+                    <i style="top: 0">Sign</i>
+                    <i style="right: 5px">in</i>
+                </div>
+                <span>
+                    <form>
+                        <p class="form">
+                            <input id="idCard" type="text" placeholder="身份证号">
+                        </p>
+                        <p class="form">
+                            <input id="trueName" type="text"  placeholder="真实姓名">
+                        </p>
+						<p class="form ">
+                            <input id="telephone" type="text"  placeholder="手机号">
+                        </p>
+                        <p class="">
+                            <input id="captcha" class="fromOne inputOne"  type="text"  placeholder="验证码">
+						    <input type="button" style="width: 85px;" id="YZM" value="验证码" onclick='getYZM()' class="btn">
+						</p>
+                        <input id="btn" type="button" value="绑定" class="btn" onclick='signin()'>
+                    </form>
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" th:inline="javascript">
+    //获取openId
+    let openId = [[${#httpServletRequest.getParameter('openId')}]];
+    let redirectUri = [[${param.redirectUri}]][0];
+    console.info(openId);
+	let time=60;
+	//获取注册码
+	function getYZM(){
+	    //禁用按钮，并发送验证码
+        let yzm = $('#YZM');
+        let telephone = $('#telephone').val();
+        let myVar;
+        if (telephone == '' || telephone == null) {
+            layer.msg('请填写手机号码！');
+            return false;
+        } else {
+            yzm.attr('disabled', 'disabled');
+            yzm.val("发送中");
+            $.ajax({
+                url: '/sendCaptcha',
+                type: 'post',
+                data: {'telephone': $('#telephone').val(), 'openId': openId},
+                dataType: 'json',
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg(result.msg);
+                        yzm.val("验证码");
+                        time = 60;
+                        yzm.removeAttr('disabled');
+                        // return clearInterval(myVar);
+                    } else {
+                        layer.msg(result.msg);
+                        myVar = window.setInterval(function () {
+                            if (time > 0) {
+                                yzm.val(time);
+                                time = time - 1;
+                            } else {
+                                yzm.val("验证码");
+                                time = 60;
+                                yzm.removeAttr('disabled');
+                                return clearInterval(myVar);
+                            }
+                        }, 1000);
+                    }
+                },
+                error: function () {
+                    layer.msg('验证码发送失败，请重新进入或刷新此页面后重试！');
+                    yzm.val("验证码");
+                    time = 60;
+                    yzm.removeAttr('disabled');
+                    // return clearInterval(myVar);
+                }
+            });
+        }
+	}
+    //注册按钮
+   function signin() {
+	    let idCard = $('#idCard').val();
+	    let trueName = $('#trueName').val();
+	    let telephone = $('#telephone').val();
+	    let captcha = $('#captcha').val();
+	    //验证是否填写相关信息
+       if (idCard == '' || idCard == null) {
+           layer.msg('请填写身份证号码！');
+           return false;
+       } else if (trueName == '' || trueName == null) {
+           layer.msg('请填写真实姓名！');
+           return false;
+       } else if (telephone == '' || telephone == null) {
+           layer.msg('请填写手机号码！');
+           return false;
+       } else if (captcha == '' || captcha == null) {
+           layer.msg('请填写验证码！');
+           return false;
+       }
+
+	    //绑定用户信息
+       $.ajax({
+           url: '/bindUserInfo',
+           type: 'post',
+           data: {'idCard':idCard, 'trueName':trueName, 'telephone':telephone, 'captcha':captcha},
+           dataType: 'json',
+           success: function (result) {
+                if (result.code == 1) {
+                    layer.msg(result.msg,function () {
+                        if (redirectUri) {
+                            window.location.href = decodeURI(redirectUri);
+                        }else {
+                            window.location.href = "/personalCenterThree";
+                        }
+                    });
+                } else {
+                    layer.msg(result.msg);
+                }
+           },
+           error: function () {
+               layer.msg('账号绑定失败，请重新进入或刷新此页面后重试！');
+           }
+       });
+    }
+</script>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>预约挂号</title>
+    <link href="/assets/css/TenG6.css" rel="stylesheet" />
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet" />
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet" />
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet" />
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet" />
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+</head>
+
+<body>
+<header class="demos-header">
+    <h1 class="demos-title ">预约挂号</h1>
+    <p class="demos-sub-title">[[#{company.name}]]</p>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 divFour">
+            <a href="/view/bindPatient">
+            <img src="/assets/images/添加.png"/>添加就诊人
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-5 divThree">
+            <!-- <div class="col-xs-1"></div> -->
+            <div class="col-xs-12">
+                <ul class="nav nav-pills nav-stacked" id="registerType">
+                   <!-- <li><a>普通</a></li>
+                    <li><a>专家</a></li>
+                    <li><a>专科</a></li>
+                    <li><a>急诊</a></li>-->
+                </ul>
+            </div>
+            <!-- <div class="col-xs-1"></div> -->
+        </div>
+        <div class="col-xs-7 divThreeOne">
+            <div class="col-xs-12">
+                <ul class="nav nav-pills nav-stacked" id="departmentInfo">
+
+                    <!--<li><a href="/view/appointmentRegistrationDetail">外科门诊<span class="glyphicon glyphicon-chevron-right"></span></a></li>-->
+                    <!--<li><a href="/view/appointmentRegistrationDetail">内科门诊<span class="glyphicon glyphicon-chevron-right"></span></a></li>-->
+                    <!--<li><a href="/view/appointmentRegistrationDetail">妇产科门诊<span class="glyphicon glyphicon-chevron-right"></span></a></li>-->
+                    <!--<li><a href="/view/appointmentRegistrationDetail">XXXXX门诊<span class="glyphicon glyphicon-chevron-right"></span></a></li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        setDate();
+        $('#registerType li a').first().click();
+    });
+    $('#registerType li a').each(function (index, domEle) {
+        $(this).click(function () {
+            getDepartmentInfo($(domEle).text());
+        })
+    });
+
+    function setDate(){
+        let str = '';
+        for (let i = 0; i < 6; i++) {
+            str+='<li><a onclick="getDepartmentInfo(\'' +new Date().getFullYear()+"-"+getNowDate(i)+'\')">'+ getNowWeek(i) + '(' + getNowDate(i) + ')</a></li>';
+           // str += '<li><a onclick="getDepartmentInfo(\"' + getNowDate(i) +'\")">\' + getNowWeek(i) + \'<br>\' + getNowDate(i) + \'</a></li>';
+        }
+
+        $('#registerType').html(str);
+    }
+
+    function getDepartmentInfo(registerType) {
+        $.ajax({
+            url: '/getDepartmentInfo',
+            data: {"registerType": registerType},
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        for (let i in data) {
+                            str += '<li><a href="/view/appointmentRegistrationDetail?registerType=' + registerType + '&departmentId=' + JSON.parse(data[i]).DeptID + '&departmentName=' + JSON.parse(data[i]).DeptCode + '">' +JSON.parse(data[i]).DeptName + '<span class="glyphicon glyphicon-chevron-right"></span></a></li>';
+                        }
+                    } else {
+                        str += '<li><a>暂无科室信息<span class="glyphicon glyphicon-chevron-right"></span></a></li>';
+                    }
+                    $('#departmentInfo').html(str);
+                } else {
+
+                }
+            },
+            error: function () {
+
+            }
+        })
+    }
+
+
+    function getNowDate(location) {
+        let date = new Date();
+        if (!location) {
+            location = 0;
+        }
+        let nextDate = new Date(date.getTime() + 24 * 60 * 60 * 1000 * location);
+        let mon = nextDate.getMonth() + 1;
+        let da = nextDate.getDate();
+        if (mon < 10) {
+            mon = '0' + mon;
+        }
+        if (da < 10) {
+            da = '0' + da;
+        }
+        return mon + '-' + da;
+    }
+
+    function getNowWeek(location) {
+        let a = ["日", "一", "二", "三", "四", "五", "六"];
+        if (!location) {
+            location = 0;
+        }
+        let week = new Date().getDay() + location;
+        if (week >= 7) {
+            week = week - 7;
+        }
+        return '周' + a[week];
+    }
+</script>
+</html>

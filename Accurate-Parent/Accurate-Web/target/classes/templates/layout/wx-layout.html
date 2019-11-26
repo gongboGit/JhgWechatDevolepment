@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/wx-layout">
+<head>
+<meta name="description" content="overview &amp; stats" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="content-type" content="text/html; charset=UTF-8">
+<link href="/assets/mui/css/mui.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/assets/mui/js/mui.min.js"></script>
+<script type="text/javascript" src="/assets/vue.js"></script>
+</head>
+
+<body>
+	<section layout:fragment="main-content">
+		这是页面
+	</section>
+	<script>
+		mui.init({
+			swipeBack:true //启用右滑关闭功能
+		});
+	</script>
+</html>

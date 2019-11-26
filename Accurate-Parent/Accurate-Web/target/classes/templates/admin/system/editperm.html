@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout" 
+	xmlns:th="http://www.thymeleaf.org" 
+	layout:decorate="layout/admin-layout">
+  <head>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div layout:fragment="content">
+    	<section th:replace="layout/dataeditor::editor(${dataRow},'postperm')"></section>
+    </div>
+  </body>
+</html>

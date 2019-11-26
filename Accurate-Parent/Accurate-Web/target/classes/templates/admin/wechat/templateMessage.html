@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/admin-layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="layout/admin-layout">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="/assets/bootstrap/bootstrap-table/bootstrap-table.css"/>
+    <script src="/assets/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="/assets/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="/assets/util.js"></script>
+    <style>
+        .float-left {
+            float: left; !important;
+        }
+        .float-right {
+            float: right; !important;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-sm-2">
+        <input name="title" class="form-control" id="title" placeholder="请输入消息标题"/>
+        </div>
+        <button class="btn btn-default" onclick="initTable()">搜索</button>
+    </div>
+    <table id="table"></table>
+    <div id="sendMsg">
+        <table id="msgReceive"></table>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button onclick="send()" class="btn btn-primary">发送</button>
+            </div>
+        </div>
+        <input type="hidden" id="messageId">
+    </div>
+</div>
+<section layout:fragment="script">
+    <script type="text/javascript">
+
+        $(function () {
+            $('#sendMsg').hide();
+            initTable();
+        });
+        function initTable() {
+            $('#table').bootstrapTable('destroy').bootstrapTable({
+                columns: [
+                    [{
+                        checkbox: true
+                    }, {
+                        field: 'title',
+                        title: '标题',
+                        align: 'center'
+                    }, {
+                        field: 'diseasesType',
+                        title: '病种类型',
+                        align: 'center',
+                    }, {
+                        field: 'templateTitle',
+                        title: '模板名称',
+                        align: 'center',
+                    }, {
+                        field: 'createTime',
+                        title: '创建时间',
+                        align: 'center',
+                        formatter: function (value) {
+                            return formatDate(new Date(value), "yyyy-MM-dd HH:mm:ss")
+                        }
+                    }, {
+                        field: 'operate',
+                        title: '操作',
+                        formatter: operateFormatter //自定义方法，添加操作按钮
+                    },
+                    ]
+                ],
+                url: "/admin/templateMessage/listMessage", //请求数据的地址URL
+                responseHandler: function (result) {
+                    if (result.code == 1) {
+                        return result.data;
+                    } else {
+                        //TODO 请求数据失败
+                    }
+                },
+                method: 'post', //请求方式(*)
+                striped: true, //是否显示行间隔色
+                cache: true, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性(*)
+                pagination: true, //是否显示分页(*)
+                sortable: true, //是否启用排序
+                theadClasses: 'dark',
+                sortOrder: "desc", //排序方式
+                sidePagination: "client", //分页方式：client客户端分页，server服务端分页(*)
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数(*)
+                pageList: [10, 50, 100], //可供选择的每页的行数(*)
+                showColumns: false, //是否显示所有的列
+                /*  showRefresh: true,*/ //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                /* height: 600,*/
+                detailView: false, //是否显示父子表    *关键位置*
+                queryParamsType: "limit",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                checkboxHeader: true,
+                /* search: true,*/
+                queryParams: queryParams,
+                showHeader: true,
+                maintainSelected: true,
+                searchFormatter: true,
+                // singleSelect: true,
+                onDblClickRow: function (row) {
+                    console.info('双击行！');
+                }
+                /*showColumns: true,*/ // 开启自定义列显示功能
+                //注册加载子表的事件。你可以理解为点击父表中+号时触发的事件
+
+
+            });
+        }
+
+        //查询参数
+        function queryParams(params) {
+            return {"title": $('#title').val()};
+        }
+
+        // 格式化按钮
+        function operateFormatter(value, row, index) {
+            return [
+                '<button type="button" class="btn-small btn-primary" onclick="sendMsg('+ row.id +','+ row.diseasesTypeId +')" style="margin-right:15px;">发送消息</button>',
+                '<button type="button" class="btn-small btn-primary" onclick="deleteMessage('+ row.id +')" style="margin-right:15px;">删除消息</button>',
+            ].join('');
+        }
+
+        function deleteMessage(id) {
+            MsgBox.confirm('您确定要删除此项吗？', function () {
+                $.ajax({
+                    url: '/admin/templateMessage/deleteMessage',
+                    type: 'post',
+                    data: {'id': id},
+                    dataType: 'json',
+                    success: function (result) {
+                        layer.msg(result.msg, function () {
+                            if (result.code == 1) {
+                                initTable();
+                            }
+                        })
+                    }
+                })
+            });
+        }
+
+        function initMsgReceiveTable(diseasesTypeId) {
+            $('#msgReceive').bootstrapTable('destroy').bootstrapTable({
+                columns: [
+                    [{
+                        checkbox: true
+                    }, {
+                        field: 'trueName',
+                        title: '真实姓名',
+                        align: 'center'
+                    }, {
+                        field: 'diseasesType',
+                        title: '病种类型',
+                        align: 'center',
+                    }, {
+                        field: 'idCard',
+                        title: '身份证号',
+                        align: 'center',
+                    }]
+                ],
+                url: "/admin/ajax/listUserByDiseasesType", //请求数据的地址URL
+                responseHandler: function (result) {
+                    if (result.code == 1) {
+                        return result.data;
+                    } else {
+                        //TODO 请求数据失败
+                    }
+                },
+                method: 'post', //请求方式(*)
+                striped: true, //是否显示行间隔色
+                cache: true, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性(*)
+                pagination: true, //是否显示分页(*)
+                sortable: true, //是否启用排序
+                theadClasses: 'dark',
+                sortOrder: "desc", //排序方式
+                sidePagination: "client", //分页方式：client客户端分页，server服务端分页(*)
+                pageNumber: 1, //初始化加载第一页，默认第一页
+                pageSize: 10, //每页的记录行数(*)
+                pageList: [10, 50, 100], //可供选择的每页的行数(*)
+                showColumns: false, //是否显示所有的列
+                /*  showRefresh: true,*/ //是否显示刷新按钮
+                minimumCountColumns: 2, //最少允许的列数
+                clickToSelect: true, //是否启用点击选中行
+                /* height: 600,*/
+                detailView: false, //是否显示父子表    *关键位置*
+                queryParamsType: "limit",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                checkboxHeader: true,
+                /* search: true,*/
+                queryParams: queryParam,
+                showHeader: true,
+                maintainSelected: true,
+                searchFormatter: true,
+                // singleSelect: true,
+                onDblClickRow: function (row) {
+                    console.info('双击行！');
+                }
+                /*showColumns: true,*/ // 开启自定义列显示功能
+                //注册加载子表的事件。你可以理解为点击父表中+号时触发的事件
+
+
+            });
+
+            //查询参数
+            function queryParam(params) {
+                return {"diseasesTypeId": diseasesTypeId};
+            }
+
+        }
+
+        function sendMsg(id,diseasesTypeId) {
+            $('#messageId').val(id);
+            initMsgReceiveTable(diseasesTypeId);
+            // let msgReceiveTable = $('#msgReceive');
+            // msgReceiveTable.show();
+            layer.open({
+                type: 1,
+                area:['800px', '600px'],
+                title: '选择发送人',
+                content: $('#sendMsg')
+            });
+        }
+
+        function send() {
+            let rows = $('#msgReceive').bootstrapTable("getSelections");
+            let openIds = [];
+            for (let i in rows) {
+                openIds.push(rows[i].openId);
+            }
+            $.ajax({
+                url: "/admin/templateMessage/sendMessage",
+                type: 'post',
+                data: {"openIds": openIds, "messageId": $('#messageId').val()},
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg, function () {
+                        if (result.code == 1) {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+</section>
+</body>
+</html>

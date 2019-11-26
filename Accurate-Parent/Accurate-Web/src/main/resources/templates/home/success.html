@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+		<title>绑定成功</title>
+		<link href="jquery-weui-build/jquery-weui-build/dist/lib/weui.min.css" rel="stylesheet" />
+		<link href="jquery-weui-build/jquery-weui-build/dist/css/jquery-weui.min.css" rel="stylesheet" />
+		<link href="jquery-weui-build/jquery-weui-build/demos/css/demos.css" rel="stylesheet" />
+	</head>
+	<body ontouchstart class="bg">
+		<div class="weui-msg">
+			<div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+			<div class="weui-msg__text-area">
+				<h2 class="weui-msg__title">操作成功</h2>
+				<p class="weui-msg__desc">内容详情，可根据实际需要安排，如果换行则不超过规定长度，居中展现<a href="javascript:void(0);">文字链接</a></p>
+			</div>
+			<div class="weui-msg__extra-area">
+				<div class="weui-footer">
+					<p class="weui-footer__links">
+						<a href="javascript:void(0);" class="weui-footer__link">底部链接文本</a>
+					</p>
+					<p class="weui-footer__text">Copyright © 2008-2016 TenG.io</p>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/jquery-3.3.1.min.js"></script>
+	<script src="../jquery-weui-build/jquery-weui-build/dist/js/jquery-weui.min.js"></script>
+	<script src="../jquery-weui-build/jquery-weui-build/dist/js/swiper.min.js"></script>
+	<script src="../jquery-weui-build/jquery-weui-build/dist/js/city-picker.min.js"></script>
+	<script>
+		function into(){
+			if(time == 0){
+					//等于0时清除计时
+					window.location.href = "personalCenterThree.html";
+				}else{
+					time= time-1;
+				}
+		}
+		var time=2;
+		window.setInterval("into()",1000);
+	</script>
+</html>

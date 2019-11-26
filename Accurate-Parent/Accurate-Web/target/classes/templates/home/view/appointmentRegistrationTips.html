@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>挂号提示</title>
+    <link href="/assets/css/TenG6.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/lib/weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/css/jquery-weui.min.css" rel="stylesheet"/>
+    <link href="/assets/jquery-weui-build/demos/css/demos.css" rel="stylesheet"/>
+    <link href="/assets/mdui-v0.4.2/css/mdui.min.css" rel="stylesheet"/>
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/assets/jquery-1.9.1.min.js"></script>
+    <script src="/assets/mdui-v0.4.2/js/mdui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/jquery-weui.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/swiper.min.js"></script>
+    <script src="/assets/jquery-weui-build/js/city-picker.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <script src="/WxPay/weChatPay.js"></script>
+    <script src="/jweixin-1.4.0.js"></script>
+</head>
+
+<body>
+<div class="page">
+    <div class="page__hd">
+        <h1 class="page__title" style="text-align: center">确认挂号</h1>
+        <!--<p class="page__desc">(@GuaHaoRq)</p>-->
+    </div>
+    <div class="page__bd">
+        <!--开始行数据-->
+        <form id="Relatation" method="POST">
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">就诊科室</label>
+                    </div>
+                    <div class="weui-cell__bd" style="text-align:right;color:blue">[[${param.departmentName}]]</div>
+
+                </div>
+                <div class="weui-cell ">
+                    <div class="weui-cell__hd"><label class="weui-label">挂号日期</label></div>
+                    <div class="weui-cell__bd" style="text-align:right;color:blue">[[${param.date}]]</div>
+
+                </div>
+                <!--<div class="weui-cell">-->
+                <!--<div class="weui-cell__hd">-->
+                <!--<label class="weui-label">预约医生</label>-->
+                <!--</div>-->
+                <!--<div class="weui-cell__bd" style="text-align:right;color:blue">@YiShengXm</div>-->
+                <!--</div>-->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">挂号项目</label>
+                    </div>
+                    <div class="weui-cell__bd" style="text-align:right;color:blue">[[${param.sessionType}]]</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">医院收费</label>
+                    </div>
+                    <div class="weui-cell__bd" style="text-align:right;color:maroon">[[${param.price}]]元</div>
+                </div>
+
+                <div class="weui-cell weui-cell_select weui-cell_select-after">
+                    <div class="weui-cell__hd">
+                        <label for="name" class="weui-label">就诊人</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" id="name" name="name" style="color:blue">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <label for="yiZhiXiao" class="weui-agree">
+                <input id="yiZhiXiao" name="yiZhiXiao" type="checkbox" class="weui-agree__checkbox" checked="checked"/>
+                <span class="weui-agree__text"> 我已知晓<a href="javascript:void(0);">《挂号须知》</a></span>
+            </label>
+            <div class="weui-btn-area">
+                <a class="weui-btn weui-btn_primary" id="frmSubmit">去支付([[${param.price}]]元)</a>
+            </div>
+        </form>
+        <!--结束行数据-->
+    </div>
+    <div class="weui-form-preview__ft">
+        <a class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:window.history.back()">返回</a>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        getPatient();
+    });
+
+    $('#frmSubmit').click(function () {
+        var isWyzx = $('#yiZhiXiao').prop('checked') ? "1" : "0";
+        if
+        (isWyzx === "0") {
+            mdui.alert('请阅读挂号须知并勾选我已知晓!');
+            return;
+        }
+        let option = $('#name option:selected');
+        console.info(option.attr('cardId'))
+        console.info(jQuery.attr('name'))
+        console.info(jQuery.attr('phone'))
+        let totalFee = [[${param.price}]][0];
+        let data = {"cardID": option.attr('cardId'), "name": option.attr('name'),
+            "phone": option.attr('phone'), "payAmt": totalFee,
+            "payNo":new Date().getTime(), "day": [[${param.date}]][0],
+            "asRowid": [[${param.asRowid}]][0], "deptID": [[${param.deptID}]][0],
+            "examId": [[${param.examId}]][0]};
+        location.href = '/WeChatPay/view?description=预约挂号&totalFee='+Math.round(totalFee*100)
+        +'&data='+ encodeURIComponent(JSON.stringify(data));
+    });
+
+    function getPatient() {
+        $.ajax({
+            url: '/listPatient',
+            type: 'get',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    let data = result.data;
+                    let str = '';
+                    if (data != null && data.length != 0) {
+                        for (let i in data) {
+
+                            // let value = "{\"cardID\":" + data[i].idCard + ", \"name\":" + data[i].trueName + ", \"phone\": " + data[i].telephone + "}"
+                            if (data[i].mainFlag == 1) {
+                                str += '<option cardID="'+ data[i].idCard +'" name="'+ data[i].trueName +'" phone="'+ data[i].telephone +'" selected>' + data[i].trueName + '</option>';
+                            }
+                            str += '<option cardID="'+ data[i].idCard +'" name="'+ data[i].trueName +'" phone="'+ data[i].telephone +'">' + data[i].trueName + '</option>';
+                        }
+                    }
+                    $('#name').html(str);
+                } else {
+
+                }
+            },
+            error: function () {
+
+            }
+        })
+    }
+</script>
+</html>

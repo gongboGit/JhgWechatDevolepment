@@ -1,0 +1,144 @@
+html {
+	font-size: 62.5%;
+}
+
+.divOne {
+	font-size: 0.7rem;
+	/* 	color: #808080; */
+	border: 1px #DDDDDD solid;
+	text-align: left;
+}
+
+.divOne p {
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.divOne img {
+	width: 2rem;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.divOne span {
+	color: #808080;
+	font-size: 0.4rem;
+}
+
+.col-xs-6,
+.col-xs-8,
+.col-xs-4,
+.col-xs-3,
+.col-xs-9,
+.col-xs-1,
+.col-xs-12,
+.col-xs-5,
+.col-xs-7{
+	padding-right: 0px !important;
+	padding-left: 0px !important;
+}
+
+.radiusOne {
+	border-radius: 25px !important;
+}
+
+.divTwo {
+	background-color: rgba(0,0,0,.04);
+}
+.divTwo div{
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 35px;
+	padding-right: 35px;
+}
+.divThree{
+	background-color: rgba(0,0,0,.04);
+	font-size: 16px;
+	box-shadow: 1px 0px 0px rgba(0,0,0,.35)	;
+}
+.divThree li a{
+	padding: 15px 20px !important;
+}
+.divThree li{
+	border-bottom: 3px #FFFFFF solid;
+	width: 95%;
+}
+
+.divThreeOne li a{
+	color: #888 !important;
+}
+.divThreeOne li{
+	border-bottom: 2px rgba(0,0,0,.04) solid;
+	width: 95%;
+}
+.divThreeOne li a{
+	padding: 10px 15px !important;
+}
+.divThreeOne li a span{
+	float: right!important;
+}
+.divFour{
+	text-align: center;
+	font-size: 16px;
+	background-color:  rgba(0,0,0,.04);
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.divFour img{
+	width: 20px;
+}
+.divFive{
+	color: #1196EE;
+}
+.divZero{
+	width: 16.66%;
+	height:75px;
+	float: left;
+	text-align: center;
+	background-color:  rgba(0,0,0,.06) ;
+	border-right: 1px solid rgba(0,0,0,.14);
+	border-left: 1px solid rgba(0,0,0,.14);
+	color:rgba(0,0,0,.48);
+}
+.divZeroOne{
+	width: 70%;
+	height: 60%;
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-bottom: 0%;
+	margin-top: 10%;
+	
+	
+}
+.divZeroTwo{
+	width: 70%;
+	height: 30%;
+	margin-left: 15%;
+	margin-right: 15%;
+	
+}
+.divZeroOneX{
+	border-radius: 5px;
+	border: #18D7D7 solid 1px;
+	background-color: #18D7D7;
+	color: white;
+}
+.divZeroTwoX{
+	color: #18D7D7;
+}
+h4 {
+	margin-block-start:0em !important;
+	margin-block-end: 0em !important;
+}
+p {
+	margin-block-start:0em !important;
+	margin-block-end: 0em !important;
+}
+.divThree a:hover{
+	background-color: #18D7D7 !important;
+	color: white;
+}
+.divThree_a_hover{
+	background-color: #18D7D7;
+	color: white !important;
+}
